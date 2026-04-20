@@ -5,8 +5,9 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { createClient } from '@/lib/supabase/server';
 
 const navLinks = [
-  { href: '/manifeste', label: 'Manifeste' },
+  { href: '/carte', label: 'Carte' },
   { href: '/selection', label: 'Sélection' },
+  { href: '/manifeste', label: 'Manifeste' },
 ];
 
 export async function Header() {
