@@ -5,6 +5,10 @@ import { notFound } from 'next/navigation';
 
 import { createClient } from '@/lib/supabase/server';
 
+import { adminDeleteReview, deleteMyReview } from './actions';
+import { FavoriteButton } from './favorite-button';
+import { ReviewForm } from './review-form';
+
 type Photo = { url: string; alt?: string };
 
 const METHOD_LABELS: Record<string, string> = {
@@ -25,8 +29,27 @@ const OPTION_LABELS: Record<string, string> = {
   seating: 'Places assises',
 };
 
-async function loadShop(slug: string) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
   const supabase = await createClient();
+  const { data: shop } = await supabase
+    .from('shops')
+    .select('name, description')
+    .eq('slug', slug)
+    .eq('status', 'published')
+    .maybeSingle();
+  if (!shop) return { title: 'Shop introuvable' };
+  return { title: shop.name, description: shop.description ?? undefined };
+}
+
+export default async function ShopPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const supabase = await createClient();
+
   const { data: shop } = await supabase
     .from('shops')
     .select('*')
@@ -34,41 +57,60 @@ async function loadShop(slug: string) {
     .eq('status', 'published')
     .maybeSingle();
 
-  if (!shop) return null;
+  if (!shop) notFound();
 
-  const { data: scores } = await supabase
-    .from('shop_scores')
-    .select('avg_cup_score, avg_experience_score, review_count')
-    .eq('shop_id', shop.id)
-    .maybeSingle();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  return { shop, scores };
-}
+  const [scoresRes, reviewsRes, myReviewRes, favRes, profileRes] = await Promise.all([
+    supabase
+      .from('shop_scores')
+      .select('avg_cup_score, avg_experience_score, review_count')
+      .eq('shop_id', shop.id)
+      .maybeSingle(),
+    supabase
+      .from('reviews_with_author')
+      .select('*')
+      .eq('shop_id', shop.id)
+      .order('created_at', { ascending: false })
+      .limit(50),
+    user
+      ? supabase
+          .from('reviews')
+          .select('cup_score, experience_score, comment, drink_ordered')
+          .eq('shop_id', shop.id)
+          .eq('user_id', user.id)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+    user
+      ? supabase
+          .from('favorites')
+          .select('shop_id')
+          .eq('shop_id', shop.id)
+          .eq('user_id', user.id)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
+    user
+      ? supabase.from('profiles').select('role').eq('id', user.id).maybeSingle()
+      : Promise.resolve({ data: null }),
+  ]);
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const loaded = await loadShop(slug);
-  if (!loaded) return { title: 'Shop introuvable' };
-  return {
-    title: loaded.shop.name,
-    description: loaded.shop.description ?? undefined,
-  };
-}
+  const scores = scoresRes.data;
+  const reviews = reviewsRes.data ?? [];
+  const myReview = myReviewRes.data;
+  const isFavorite = !!favRes.data;
+  const isAdmin = profileRes.data?.role === 'admin';
 
-export default async function ShopPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const loaded = await loadShop(slug);
-  if (!loaded) notFound();
-
-  const { shop, scores } = loaded;
   const photos: Photo[] = Array.isArray(shop.photos)
     ? (shop.photos as Photo[]).filter((p) => p && typeof p.url === 'string')
     : [];
   const cover = photos[0];
+
+  const deleteMine = async () => {
+    'use server';
+    await deleteMyReview(shop.id, slug);
+  };
 
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-16 md:py-24">
@@ -76,9 +118,12 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
         {shop.city ?? 'Coffee shop'}
         {shop.is_selection ? ' · Sélection Dripper' : ''}
       </p>
-      <h1 className="font-serif text-5xl leading-[1.05] md:text-6xl">
-        <em className="italic">{shop.name}</em>
-      </h1>
+      <div className="flex flex-wrap items-start justify-between gap-6">
+        <h1 className="font-serif text-5xl leading-[1.05] md:text-6xl">
+          <em className="italic">{shop.name}</em>
+        </h1>
+        <FavoriteButton shopId={shop.id} slug={slug} isFavorite={isFavorite} authed={!!user} />
+      </div>
 
       {shop.description ? (
         <p className="text-muted-foreground mt-6 max-w-2xl text-lg leading-relaxed">
@@ -101,7 +146,7 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
       ) : null}
 
       <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-3">
-        <div className="md:col-span-2 space-y-8">
+        <div className="md:col-span-2 space-y-10">
           <Scores
             cup={scores?.avg_cup_score}
             exp={scores?.avg_experience_score}
@@ -124,10 +169,7 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
             <Section title="Photos">
               <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
                 {photos.slice(1).map((p) => (
-                  <div
-                    key={p.url}
-                    className="relative aspect-square overflow-hidden rounded-md"
-                  >
+                  <div key={p.url} className="relative aspect-square overflow-hidden rounded-md">
                     <Image
                       src={p.url}
                       alt={p.alt ?? shop.name}
@@ -141,6 +183,108 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
               </div>
             </Section>
           ) : null}
+
+          <section>
+            <h2 className="font-serif text-2xl mb-4">
+              {myReview ? 'Votre avis' : 'Laisser un avis'}
+            </h2>
+            {!user ? (
+              <p className="text-muted-foreground text-sm">
+                <Link
+                  href={`/connexion?next=/shops/${slug}`}
+                  className="underline underline-offset-4"
+                >
+                  Connectez-vous
+                </Link>{' '}
+                pour noter ce shop.
+              </p>
+            ) : (
+              <>
+                <ReviewForm
+                  shopId={shop.id}
+                  slug={slug}
+                  existing={
+                    myReview
+                      ? {
+                          cup_score: myReview.cup_score,
+                          experience_score: myReview.experience_score,
+                          comment: myReview.comment,
+                          drink_ordered: myReview.drink_ordered,
+                        }
+                      : null
+                  }
+                />
+                {myReview ? (
+                  <form action={deleteMine} className="mt-3">
+                    <button
+                      type="submit"
+                      className="text-destructive hover:underline text-xs"
+                    >
+                      Supprimer mon avis
+                    </button>
+                  </form>
+                ) : null}
+              </>
+            )}
+          </section>
+
+          <section>
+            <h2 className="font-serif text-2xl mb-4">
+              Avis ({scores?.review_count ?? 0})
+            </h2>
+            {!reviews.length ? (
+              <p className="text-muted-foreground text-sm">Aucun avis pour le moment.</p>
+            ) : (
+              <ul className="space-y-6">
+                {reviews.map((r) => {
+                  const adminDelete = async () => {
+                    'use server';
+                    if (r.id) await adminDeleteReview(r.id, slug);
+                  };
+                  const name = r.author_display_name ?? r.author_username ?? 'Anonyme';
+                  return (
+                    <li key={r.id} className="border-border border-b pb-6 last:border-0">
+                      <div className="flex items-baseline justify-between gap-4">
+                        <div>
+                          <p className="text-sm font-medium">{name}</p>
+                          <p className="text-muted-foreground text-xs">
+                            {r.created_at
+                              ? new Date(r.created_at).toLocaleDateString('fr-FR', {
+                                  day: 'numeric',
+                                  month: 'long',
+                                  year: 'numeric',
+                                })
+                              : ''}
+                          </p>
+                        </div>
+                        <div className="text-muted-foreground text-xs tabular-nums">
+                          Tasse {r.cup_score}/10 · Exp. {r.experience_score}/10
+                        </div>
+                      </div>
+                      {r.drink_ordered ? (
+                        <p className="text-muted-foreground mt-2 text-xs italic">
+                          Commandé : {r.drink_ordered}
+                        </p>
+                      ) : null}
+                      {r.comment ? (
+                        <p className="mt-3 leading-relaxed">{r.comment}</p>
+                      ) : null}
+                      {isAdmin ? (
+                        <form action={adminDelete} className="mt-3">
+                          <button
+                            type="submit"
+                            className="text-destructive text-xs hover:underline"
+                          >
+                            Supprimer (admin)
+                          </button>
+                        </form>
+                      ) : null}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
         </div>
 
         <aside className="space-y-6 text-sm">
@@ -221,9 +365,7 @@ function Scores({
       <ScoreCard label="Tasse" value={cup} />
       <ScoreCard label="Expérience" value={exp} />
       <p className="text-muted-foreground col-span-2 text-xs">
-        {count === 0
-          ? 'Aucun avis pour le moment.'
-          : `Moyenne sur ${count} avis Dripper.`}
+        {count === 0 ? 'Aucun avis pour le moment.' : `Moyenne sur ${count} avis Dripper.`}
       </p>
     </div>
   );
@@ -234,7 +376,7 @@ function ScoreCard({ label, value }: { label: string; value: number | null | und
     <div className="border-border rounded-md border p-5">
       <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase">{label}</p>
       <p className="mt-2 font-serif text-4xl">
-        {value !== null && value !== undefined ? value.toFixed(1) : '—'}
+        {value !== null && value !== undefined ? Number(value).toFixed(1) : '—'}
         <span className="text-muted-foreground text-base"> / 10</span>
       </p>
     </div>

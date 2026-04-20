@@ -125,6 +125,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "drink_echoes_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews_with_author"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "drink_echoes_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -700,6 +707,51 @@ export type Database = {
           type?: string | null
         }
         Relationships: []
+      }
+      reviews_with_author: {
+        Row: {
+          author_display_name: string | null
+          author_username: string | null
+          comment: string | null
+          created_at: string | null
+          cup_score: number | null
+          drink_ordered: string | null
+          experience_score: number | null
+          id: string | null
+          shop_id: string | null
+          user_id: string | null
+          visited_at: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shop_scores"
+            referencedColumns: ["shop_id"]
+          },
+          {
+            foreignKeyName: "reviews_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shops"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shops_public"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reviews_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       shop_scores: {
         Row: {
