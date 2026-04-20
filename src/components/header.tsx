@@ -7,7 +7,8 @@ import { createClient } from '@/lib/supabase/server';
 const navLinks = [
   { href: '/carte', label: 'Carte' },
   { href: '/selection', label: 'Sélection' },
-  { href: '/manifeste', label: 'Manifeste' },
+  { href: '/guides', label: 'Guides' },
+  { href: '/blog', label: 'Journal' },
 ];
 
 export async function Header() {

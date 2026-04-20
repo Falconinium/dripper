@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/server';
 import { adminDeleteReview, deleteMyReview } from './actions';
 import { FavoriteButton } from './favorite-button';
 import { ReviewForm } from './review-form';
+import { ShopMap } from './shop-map';
 
 type Photo = { url: string; alt?: string };
 
@@ -58,6 +59,12 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
     .maybeSingle();
 
   if (!shop) notFound();
+
+  const { data: coordsRow } = await supabase
+    .from('shops_public')
+    .select('lng, lat')
+    .eq('id', shop.id)
+    .maybeSingle();
 
   const {
     data: { user },
@@ -112,8 +119,53 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
     await deleteMyReview(shop.id, slug);
   };
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ?? 'http://localhost:3000';
+
+  const jsonLd: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'CafeOrCoffeeShop',
+    '@id': `${baseUrl}/shops/${slug}`,
+    name: shop.name,
+    description: shop.description ?? undefined,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: shop.address ?? undefined,
+      postalCode: shop.postal_code ?? undefined,
+      addressLocality: shop.city ?? undefined,
+      addressCountry: 'FR',
+    },
+    telephone: shop.phone ?? undefined,
+    url: shop.website ?? `${baseUrl}/shops/${slug}`,
+    image: photos.map((p) => p.url),
+    ...(coordsRow?.lng && coordsRow?.lat
+      ? {
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: coordsRow.lat,
+            longitude: coordsRow.lng,
+          },
+        }
+      : {}),
+    ...(scores?.avg_cup_score && scores?.review_count
+      ? {
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: Number(scores.avg_cup_score),
+            reviewCount: scores.review_count,
+            bestRating: 10,
+            worstRating: 1,
+          },
+        }
+      : {}),
+  };
+
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-16 md:py-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <p className="text-muted-foreground mb-4 text-xs tracking-[0.25em] uppercase">
         {shop.city ?? 'Coffee shop'}
         {shop.is_selection ? ' · Sélection Dripper' : ''}
@@ -288,6 +340,14 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
         </div>
 
         <aside className="space-y-6 text-sm">
+          {coordsRow?.lng && coordsRow?.lat ? (
+            <ShopMap
+              lng={coordsRow.lng}
+              lat={coordsRow.lat}
+              token={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ''}
+              name={shop.name}
+            />
+          ) : null}
           <InfoRow label="Adresse" value={shop.address} />
           {shop.postal_code || shop.city ? (
             <InfoRow
