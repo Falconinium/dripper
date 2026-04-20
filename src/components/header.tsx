@@ -2,13 +2,19 @@ import Link from 'next/link';
 
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { createClient } from '@/lib/supabase/server';
 
 const navLinks = [
   { href: '/manifeste', label: 'Manifeste' },
   { href: '/selection', label: 'Sélection' },
 ];
 
-export function Header() {
+export async function Header() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <header className="border-border/60 bg-background/80 sticky top-0 z-40 w-full border-b backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
@@ -25,6 +31,14 @@ export function Header() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link
+                href={user ? '/mon-compte' : '/connexion'}
+                className="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm transition-colors"
+              >
+                {user ? 'Mon compte' : 'Connexion'}
+              </Link>
+            </li>
           </ul>
           <ThemeToggle />
         </nav>
