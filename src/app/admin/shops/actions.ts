@@ -168,6 +168,33 @@ export async function uploadShopPhoto(shopId: string, formData: FormData) {
   return { status: 'success' as const };
 }
 
+export async function linkShopRoasters(shopId: string, slug: string, formData: FormData) {
+  await requireAdmin();
+  const selected = formData.getAll('roaster_id').map((v) => String(v));
+  const primaryId = String(formData.get('primary_roaster_id') ?? '');
+
+  const supabase = await createClient();
+
+  // Wipe and reinsert — simplest and keeps primary in sync.
+  const { error: delErr } = await supabase.from('shop_roasters').delete().eq('shop_id', shopId);
+  if (delErr) return { status: 'error' as const, message: delErr.message };
+
+  if (selected.length) {
+    const rows = selected.map((roaster_id) => ({
+      shop_id: shopId,
+      roaster_id,
+      is_primary: roaster_id === primaryId,
+    }));
+    const { error: insErr } = await supabase.from('shop_roasters').insert(rows);
+    if (insErr) return { status: 'error' as const, message: insErr.message };
+  }
+
+  revalidatePath(`/admin/shops/${shopId}`);
+  revalidatePath(`/shops/${slug}`);
+  revalidatePath('/torrefacteurs');
+  return { status: 'success' as const };
+}
+
 export async function removeShopPhoto(shopId: string, path: string) {
   await requireAdmin();
   const supabase = await createClient();
