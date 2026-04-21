@@ -68,7 +68,6 @@ export function AddressAutocomplete({
 
   useEffect(() => {
     if (!token || query.trim().length < 3) {
-      setSuggestions([]);
       return;
     }
     if (debounceRef.current) clearTimeout(debounceRef.current);

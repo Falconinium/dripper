@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { PhotoCarousel } from '@/components/photo-carousel';
 import { createClient } from '@/lib/supabase/server';
 import { instagramHandle, instagramUrl } from '@/lib/utils/instagram';
 
@@ -121,7 +121,6 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
   const photos: Photo[] = Array.isArray(shop.photos)
     ? (shop.photos as Photo[]).filter((p) => p && typeof p.url === 'string')
     : [];
-  const cover = photos[0];
 
   const deleteMine = async () => {
     'use server';
@@ -192,18 +191,8 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
         </p>
       ) : null}
 
-      {cover ? (
-        <div className="relative mt-12 aspect-[16/9] w-full overflow-hidden rounded-md">
-          <Image
-            src={cover.url}
-            alt={cover.alt ?? shop.name}
-            fill
-            className="object-cover"
-            sizes="(min-width: 1024px) 64rem, 100vw"
-            priority
-            unoptimized
-          />
-        </div>
+      {photos.length ? (
+        <PhotoCarousel photos={photos} name={shop.name} priority />
       ) : null}
 
       <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-3">
@@ -245,25 +234,6 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
                   </li>
                 ))}
               </ul>
-            </Section>
-          ) : null}
-
-          {photos.length > 1 ? (
-            <Section title="Photos">
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {photos.slice(1).map((p) => (
-                  <div key={p.url} className="relative aspect-square overflow-hidden rounded-md">
-                    <Image
-                      src={p.url}
-                      alt={p.alt ?? shop.name}
-                      fill
-                      className="object-cover"
-                      sizes="300px"
-                      unoptimized
-                    />
-                  </div>
-                ))}
-              </div>
             </Section>
           ) : null}
 
