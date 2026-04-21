@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
 import type { ShopFormState } from './actions';
+import { AddressAutocomplete } from './address-autocomplete';
 
 const METHODS = [
   { key: 'espresso', label: 'Espresso' },
@@ -60,10 +61,12 @@ export function ShopForm({
   action,
   submitLabel,
   initial,
+  mapboxToken,
 }: {
   action: (prev: ShopFormState, fd: FormData) => Promise<ShopFormState>;
   submitLabel: string;
   initial?: ShopInitialValues;
+  mapboxToken: string;
 }) {
   const [state, formAction] = useActionState<ShopFormState, FormData>(action, { status: 'idle' });
   const methods = initial?.methods ?? [];
@@ -90,36 +93,14 @@ export function ShopForm({
         />
       </div>
 
-      <Field label="Adresse *" name="address" defaultValue={initial?.address ?? ''} required />
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Field label="Ville" name="city" defaultValue={initial?.city ?? ''} />
-        <Field
-          label="Code postal"
-          name="postal_code"
-          defaultValue={initial?.postal_code ?? ''}
-        />
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <Field
-          label="Longitude (optionnel)"
-          name="lng"
-          type="number"
-          step="any"
-          defaultValue={initial?.coords?.lng?.toString() ?? ''}
-        />
-        <Field
-          label="Latitude (optionnel)"
-          name="lat"
-          type="number"
-          step="any"
-          defaultValue={initial?.coords?.lat?.toString() ?? ''}
-        />
-      </div>
-      <p className="text-muted-foreground text-xs">
-        Laissez vide pour un géocodage auto via Mapbox. Sinon valeurs manuelles prioritaires.
-      </p>
+      <AddressAutocomplete
+        token={mapboxToken}
+        defaultAddress={initial?.address ?? ''}
+        defaultCity={initial?.city ?? ''}
+        defaultPostalCode={initial?.postal_code ?? ''}
+        defaultLng={initial?.coords?.lng?.toString() ?? ''}
+        defaultLat={initial?.coords?.lat?.toString() ?? ''}
+      />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Field label="Téléphone" name="phone" defaultValue={initial?.phone ?? ''} />

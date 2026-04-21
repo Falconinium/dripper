@@ -92,6 +92,7 @@ export default async function EditShopPage({ params }: { params: Promise<{ id: s
         <ShopForm
           action={action}
           submitLabel="Enregistrer"
+          mapboxToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ''}
           initial={{
             name: shop.name,
             slug: shop.slug,
