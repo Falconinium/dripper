@@ -378,7 +378,24 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
               name={shop.name}
             />
           ) : null}
-          <InfoRow label="Adresse" value={shop.address} />
+          {shop.address ? (
+            <InfoRow
+              label="Adresse"
+              value={
+                <Link
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                    [shop.address, shop.postal_code, shop.city].filter(Boolean).join(', '),
+                  )}`}
+                  target="_blank"
+                  rel="noopener"
+                  className="underline underline-offset-4"
+                >
+                  {shop.address}
+                  <span className="text-muted-foreground ml-1 text-xs">↗ Itinéraire</span>
+                </Link>
+              }
+            />
+          ) : null}
           {shop.postal_code || shop.city ? (
             <InfoRow
               label="Ville"

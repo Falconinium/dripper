@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 
+import { listCities } from '@/lib/cities';
 import { getAllSlugs } from '@/lib/content/mdx';
 import { createClient } from '@/lib/supabase/server';
 
@@ -13,19 +14,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .select('slug, updated_at')
     .eq('status', 'published');
 
-  const [blogSlugs, guideSlugs] = await Promise.all([
+  const [blogSlugs, guideSlugs, cities] = await Promise.all([
     getAllSlugs('blog'),
     getAllSlugs('guides'),
+    listCities(),
   ]);
 
   const staticEntries: MetadataRoute.Sitemap = [
     '',
     '/carte',
+    '/shops',
     '/selection',
     '/selection/criteres',
     '/manifeste',
     '/blog',
     '/guides',
+    '/torrefacteurs',
   ].map((path) => ({
     url: `${BASE}${path}`,
     changeFrequency: 'weekly',
@@ -51,5 +55,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticEntries, ...shopEntries, ...blogEntries, ...guideEntries];
+  const cityEntries: MetadataRoute.Sitemap = cities.map((c) => ({
+    url: `${BASE}/shops?city=${c.slug}`,
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }));
+
+  return [
+    ...staticEntries,
+    ...shopEntries,
+    ...cityEntries,
+    ...blogEntries,
+    ...guideEntries,
+  ];
 }

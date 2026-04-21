@@ -1,6 +1,9 @@
 import Link from 'next/link';
 
+import { CitySearch } from '@/components/city-search';
+import { ShopCard } from '@/components/shop-card';
 import { Button } from '@/components/ui/button';
+import { listCities } from '@/lib/cities';
 import { listContent } from '@/lib/content/mdx';
 import { createClient } from '@/lib/supabase/server';
 
@@ -24,23 +27,41 @@ const pillars = [
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const [shopsRes, guides] = await Promise.all([
+  const [shopsRes, guides, cities] = await Promise.all([
     supabase
       .from('shops')
-      .select('slug, name, city, description')
+      .select('id, slug, name, city, description, is_selection, photos')
       .eq('status', 'published')
       .eq('is_selection', true)
       .order('name')
       .limit(6),
     listContent('guides'),
+    listCities(),
   ]);
 
   const featured = shopsRes.data ?? [];
   const latestGuides = guides.slice(0, 3);
+  const topCities = cities.slice(0, 5);
+
+  const scoresByShop = new Map<string, number>();
+  if (featured.length) {
+    const { data: scores } = await supabase
+      .from('shop_scores')
+      .select('shop_id, avg_cup_score')
+      .in(
+        'shop_id',
+        featured.map((s) => s.id),
+      );
+    for (const row of scores ?? []) {
+      if (row.avg_cup_score !== null && row.shop_id) {
+        scoresByShop.set(row.shop_id, Number(row.avg_cup_score));
+      }
+    }
+  }
 
   return (
     <main className="flex flex-1 flex-col">
-      <section className="mx-auto flex w-full max-w-4xl flex-col justify-center gap-8 px-6 pt-24 pb-20 md:pt-32 md:pb-28">
+      <section className="mx-auto flex w-full max-w-5xl flex-col items-start justify-center gap-8 px-6 pt-20 pb-16 md:pt-28 md:pb-24">
         <p className="text-muted-foreground text-xs tracking-[0.25em] uppercase">
           Le guide du café de spécialité · France
         </p>
@@ -50,11 +71,33 @@ export default async function HomePage() {
           <em className="italic">au sérieux.</em>
         </h1>
         <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed md:text-xl">
-          Dripper référence les coffee shops français qui travaillent vraiment le grain.
-          Une carte, des critères publics, des torréfacteurs identifiés, des avis qualifiés.
+          Trouve les meilleurs coffee shops de spécialité dans ta ville. Grains
+          travaillés, extraction maîtrisée, adresses vérifiées.
         </p>
-        <div className="flex flex-wrap items-center gap-3 pt-2">
-          <Button asChild size="lg">
+
+        <div className="w-full max-w-xl pt-2">
+          <CitySearch cities={cities} />
+        </div>
+
+        {topCities.length ? (
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <span className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
+              Populaires
+            </span>
+            {topCities.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/shops?city=${c.slug}`}
+                className="border-border hover:bg-muted/40 rounded-full border px-3 py-1 text-xs transition-colors"
+              >
+                {c.name}
+              </Link>
+            ))}
+          </div>
+        ) : null}
+
+        <div className="flex flex-wrap items-center gap-3 pt-4">
+          <Button asChild size="lg" variant="outline">
             <Link href="/carte">Explorer la carte</Link>
           </Button>
           <Button asChild size="lg" variant="ghost">
@@ -76,7 +119,7 @@ export default async function HomePage() {
                 </h2>
               </div>
               <Link
-                href="/carte"
+                href="/selection"
                 className="text-muted-foreground hover:text-foreground hidden text-sm underline underline-offset-4 md:block"
               >
                 Voir toutes les adresses
@@ -85,22 +128,15 @@ export default async function HomePage() {
             <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-md border bg-border border-border md:grid-cols-2 lg:grid-cols-3">
               {featured.map((s) => (
                 <li key={s.slug} className="bg-background">
-                  <Link
-                    href={`/shops/${s.slug}`}
-                    className="hover:bg-muted/40 flex h-full flex-col gap-2 p-6 transition-colors"
-                  >
-                    <h3 className="font-serif text-xl leading-tight">{s.name}</h3>
-                    {s.city ? (
-                      <p className="text-muted-foreground text-xs tracking-[0.15em] uppercase">
-                        {s.city}
-                      </p>
-                    ) : null}
-                    {s.description ? (
-                      <p className="text-muted-foreground line-clamp-3 text-sm">
-                        {s.description}
-                      </p>
-                    ) : null}
-                  </Link>
+                  <ShopCard
+                    slug={s.slug}
+                    name={s.name}
+                    city={s.city}
+                    description={s.description}
+                    is_selection={s.is_selection}
+                    photos={s.photos}
+                    cup_score={scoresByShop.get(s.id) ?? null}
+                  />
                 </li>
               ))}
             </ul>
