@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { createClient } from '@/lib/supabase/server';
+import { instagramHandle, instagramUrl } from '@/lib/utils/instagram';
 
 type Photo = { url: string; alt?: string };
 
@@ -167,15 +168,17 @@ export default async function RoasterPage({
               }
             />
           ) : null}
-          {roaster.instagram ? (
+          {roaster.instagram && instagramHandle(roaster.instagram) ? (
             <InfoRow
               label="Instagram"
               value={
                 <Link
-                  href={`https://instagram.com/${roaster.instagram.replace(/^@/, '')}`}
+                  href={instagramUrl(roaster.instagram)!}
+                  target="_blank"
+                  rel="noopener"
                   className="underline underline-offset-4"
                 >
-                  @{roaster.instagram.replace(/^@/, '')}
+                  @{instagramHandle(roaster.instagram)}
                 </Link>
               }
             />

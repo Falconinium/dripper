@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { createClient } from '@/lib/supabase/server';
+import { instagramHandle, instagramUrl } from '@/lib/utils/instagram';
 
 import { adminDeleteReview, deleteMyReview } from './actions';
 import { FavoriteButton } from './favorite-button';
@@ -413,15 +414,17 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
               }
             />
           ) : null}
-          {shop.instagram ? (
+          {shop.instagram && instagramHandle(shop.instagram) ? (
             <InfoRow
               label="Instagram"
               value={
                 <Link
-                  href={`https://instagram.com/${shop.instagram.replace(/^@/, '')}`}
+                  href={instagramUrl(shop.instagram)!}
+                  target="_blank"
+                  rel="noopener"
                   className="underline underline-offset-4"
                 >
-                  @{shop.instagram.replace(/^@/, '')}
+                  @{instagramHandle(shop.instagram)}
                 </Link>
               }
             />
