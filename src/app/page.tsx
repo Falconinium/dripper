@@ -125,9 +125,9 @@ export default async function HomePage() {
                 Voir toutes les adresses
               </Link>
             </div>
-            <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-md border bg-border border-border md:grid-cols-2 lg:grid-cols-3">
+            <ul className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2 md:gap-x-10 md:gap-y-16 lg:grid-cols-3 lg:gap-x-8">
               {featured.map((s) => (
-                <li key={s.slug} className="bg-background">
+                <li key={s.slug}>
                   <ShopCard
                     slug={s.slug}
                     name={s.name}

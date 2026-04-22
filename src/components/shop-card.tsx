@@ -27,45 +27,53 @@ export function ShopCard({
   cup_score,
 }: ShopCardProps) {
   const cover = firstPhotoUrl(photos);
+  const score = typeof cup_score === 'number' ? cup_score : null;
 
   return (
-    <Link
-      href={`/shops/${slug}`}
-      className="group bg-background hover:bg-muted/30 flex h-full flex-col overflow-hidden transition-colors"
-    >
-      <div className="bg-muted relative aspect-[4/3] w-full overflow-hidden">
+    <Link href={`/shops/${slug}`} className="group block">
+      <div className="bg-muted relative aspect-[4/5] w-full overflow-hidden rounded-2xl">
         {cover ? (
           <Image
             src={cover}
             alt={name}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-            sizes="(min-width: 1024px) 360px, (min-width: 768px) 45vw, 90vw"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+            sizes="(min-width: 1024px) 480px, (min-width: 768px) 45vw, 92vw"
             unoptimized
           />
         ) : (
-          <div className="text-muted-foreground flex h-full items-center justify-center text-xs tracking-[0.25em] uppercase">
+          <div className="text-muted-foreground flex h-full items-center justify-center font-serif text-6xl italic">
             {name.slice(0, 1)}
           </div>
         )}
         {is_selection ? (
-          <span className="bg-background/90 border-border absolute top-3 left-3 rounded-full border px-2 py-0.5 text-[10px] tracking-wider uppercase backdrop-blur">
+          <span className="bg-background/95 text-foreground absolute top-4 left-4 rounded-full px-3 py-1 text-[10px] font-medium tracking-[0.15em] uppercase shadow-sm backdrop-blur">
             Sélection
           </span>
         ) : null}
-        {cup_score !== null && cup_score !== undefined ? (
-          <span className="bg-background/90 border-border absolute top-3 right-3 rounded-full border px-2 py-0.5 text-xs tabular-nums backdrop-blur">
-            {Number(cup_score).toFixed(1)}
-          </span>
-        ) : null}
       </div>
-      <div className="flex flex-1 flex-col gap-1 p-4">
-        <h3 className="font-serif text-lg leading-tight">{name}</h3>
+
+      <div className="mt-5 px-1">
+        <div className="flex items-baseline justify-between gap-4">
+          <h3 className="font-serif text-xl leading-tight tracking-tight md:text-2xl">
+            {name}
+          </h3>
+          {score !== null ? (
+            <span className="shrink-0 font-serif text-lg tabular-nums">
+              {score.toFixed(1)}
+              <span className="text-muted-foreground text-sm"> /10</span>
+            </span>
+          ) : null}
+        </div>
+
         {city ? (
-          <p className="text-muted-foreground text-xs tracking-[0.15em] uppercase">{city}</p>
+          <p className="text-muted-foreground mt-1.5 text-sm">{city}</p>
         ) : null}
+
         {description ? (
-          <p className="text-muted-foreground line-clamp-2 mt-1 text-sm">{description}</p>
+          <p className="text-muted-foreground/80 line-clamp-2 mt-3 text-sm leading-relaxed">
+            {description}
+          </p>
         ) : null}
       </div>
     </Link>

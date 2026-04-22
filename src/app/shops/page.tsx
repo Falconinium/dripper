@@ -244,9 +244,9 @@ export default async function ShopsListPage({
       {!count ? (
         <p className="text-muted-foreground mt-6">Aucun shop ne correspond à ces critères.</p>
       ) : (
-        <ul className="mt-6 grid grid-cols-1 gap-px overflow-hidden rounded-md border bg-border border-border md:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-10 grid grid-cols-1 gap-x-8 gap-y-14 md:mt-14 md:grid-cols-2 md:gap-x-10 md:gap-y-16 lg:grid-cols-3 lg:gap-x-8">
           {shops!.map((s) => (
-            <li key={s.id} className="bg-background">
+            <li key={s.id}>
               <ShopCard
                 slug={s.slug}
                 name={s.name}
