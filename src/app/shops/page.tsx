@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { ShopCard } from '@/components/shop-card';
+import { ShopFilters } from '@/components/shop-filters';
 import { listCities } from '@/lib/cities';
 import { listContent } from '@/lib/content/mdx';
 import { createClient } from '@/lib/supabase/server';
@@ -162,80 +163,15 @@ export default async function ShopsListPage({
         </div>
       ) : null}
 
-      <form className="border-border mt-10 rounded-md border p-5">
-        {citySlug ? <input type="hidden" name="city" value={citySlug} /> : null}
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          <fieldset>
-            <legend className="text-muted-foreground mb-2 text-xs tracking-[0.2em] uppercase">
-              Sélection
-            </legend>
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                name="selection"
-                value="1"
-                defaultChecked={onlySelection}
-                className="size-4"
-              />
-              Uniquement shops Sélection
-            </label>
-          </fieldset>
-
-          <fieldset>
-            <legend className="text-muted-foreground mb-2 text-xs tracking-[0.2em] uppercase">
-              Méthodes
-            </legend>
-            <div className="flex flex-wrap gap-x-4 gap-y-2">
-              {METHOD_OPTIONS.map((m) => (
-                <label key={m.key} className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    name="method"
-                    value={m.key}
-                    defaultChecked={selectedMethods.includes(m.key)}
-                    className="size-4"
-                  />
-                  {m.label}
-                </label>
-              ))}
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <legend className="text-muted-foreground mb-2 text-xs tracking-[0.2em] uppercase">
-              Options
-            </legend>
-            <div className="flex flex-wrap gap-x-4 gap-y-2">
-              {OPTION_OPTIONS.map((o) => (
-                <label key={o.key} className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    name="option"
-                    value={o.key}
-                    defaultChecked={selectedOptions.includes(o.key)}
-                    className="size-4"
-                  />
-                  {o.label}
-                </label>
-              ))}
-            </div>
-          </fieldset>
-        </div>
-        <div className="mt-5 flex gap-3">
-          <button
-            type="submit"
-            className="border-foreground hover:bg-foreground hover:text-background rounded-md border px-4 py-2 text-sm transition-colors"
-          >
-            Filtrer
-          </button>
-          <Link
-            href={cityEntry ? `/shops?city=${cityEntry.slug}` : '/shops'}
-            className="text-muted-foreground hover:text-foreground self-center text-sm"
-          >
-            Réinitialiser les filtres
-          </Link>
-        </div>
-      </form>
+      <ShopFilters
+        citySlug={citySlug}
+        selectionChecked={onlySelection}
+        methods={METHOD_OPTIONS}
+        options={OPTION_OPTIONS}
+        selectedMethods={selectedMethods}
+        selectedOptions={selectedOptions}
+        resetHref={cityEntry ? `/shops?city=${cityEntry.slug}` : '/shops'}
+      />
 
       <p className="text-muted-foreground mt-8 text-sm">
         {count} {count > 1 ? 'résultats' : 'résultat'}.
