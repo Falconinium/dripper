@@ -92,7 +92,9 @@ export function PhotoCarousel({
               fill
               className="object-cover"
               sizes="(min-width: 1024px) 64rem, 100vw"
-              priority={priority && i === 0}
+              priority={i === 0 ? Boolean(priority) : false}
+              fetchPriority={priority && i === 0 ? 'high' : 'auto'}
+              loading={priority && i === 0 ? 'eager' : 'lazy'}
               unoptimized
             />
           </div>

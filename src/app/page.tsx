@@ -126,7 +126,7 @@ export default async function HomePage() {
               </Link>
             </div>
             <ul className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2 md:gap-x-10 md:gap-y-16 lg:grid-cols-3 lg:gap-x-8">
-              {featured.map((s) => (
+              {featured.map((s, i) => (
                 <li key={s.slug}>
                   <ShopCard
                     slug={s.slug}
@@ -136,6 +136,7 @@ export default async function HomePage() {
                     is_selection={s.is_selection}
                     photos={s.photos}
                     cup_score={scoresByShop.get(s.id) ?? null}
+                    priority={i === 0}
                   />
                 </li>
               ))}

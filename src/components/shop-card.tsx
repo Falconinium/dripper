@@ -9,6 +9,7 @@ type ShopCardProps = {
   is_selection?: boolean | null;
   photos?: unknown;
   cup_score?: number | null;
+  priority?: boolean;
 };
 
 function firstPhotoUrl(photos: unknown): string | null {
@@ -25,6 +26,7 @@ export function ShopCard({
   is_selection,
   photos,
   cup_score,
+  priority,
 }: ShopCardProps) {
   const cover = firstPhotoUrl(photos);
   const score = typeof cup_score === 'number' ? cup_score : null;
@@ -39,6 +41,9 @@ export function ShopCard({
             fill
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
             sizes="(min-width: 1024px) 480px, (min-width: 768px) 45vw, 92vw"
+            priority={priority}
+            fetchPriority={priority ? 'high' : 'auto'}
+            loading={priority ? 'eager' : 'lazy'}
             unoptimized
           />
         ) : (

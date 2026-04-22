@@ -181,7 +181,7 @@ export default async function ShopsListPage({
         <p className="text-muted-foreground mt-6">Aucun shop ne correspond à ces critères.</p>
       ) : (
         <ul className="mt-10 grid grid-cols-1 gap-x-8 gap-y-14 md:mt-14 md:grid-cols-2 md:gap-x-10 md:gap-y-16 lg:grid-cols-3 lg:gap-x-8">
-          {shops!.map((s) => (
+          {shops!.map((s, i) => (
             <li key={s.id}>
               <ShopCard
                 slug={s.slug}
@@ -191,6 +191,7 @@ export default async function ShopsListPage({
                 is_selection={s.is_selection}
                 photos={s.photos}
                 cup_score={scoresByShop.get(s.id) ?? null}
+                priority={i === 0}
               />
             </li>
           ))}

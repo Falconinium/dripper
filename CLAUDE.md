@@ -211,7 +211,6 @@ Un shop obtient le badge s'il coche **les 4 critères non-négociables** :
 - **MDX** pour le blog/city guides (ou **Sanity**/**Payload** si besoin de CMS collaboratif).
 
 ### 8.8 Observabilité
-- **Sentry** (erreurs front + edge functions).
 - **Axiom** ou Vercel Logs (logs).
 
 ### 8.9 Hébergement / DevOps
@@ -451,7 +450,7 @@ events (id, title, shop_id, starts_at, ticket_url, ...)
 | 1 | Setup stack, design system, Supabase schema, auth, modèle shop, page d'accueil, manifeste, critères publics |
 | 2 | Carte interactive, fiche shop, seeding 30 premiers shops Paris, premier city guide |
 | 3 | Comptes users, favoris, reviews, carnet de dégustation, **MVP public "soft launch"** |
-| 4 | Blog/city guides (5 villes), SEO solide, Sentry |
+| 4 | Blog/city guides (5 villes), SEO solide |
 | 5 | Newsletter, badge Selection UI, 100 shops, presse |
 | 6 | **Launch officiel**, soirée, relations presse, annuaire torréfacteurs |
 | 7–8 | Stripe, dashboard Pro, premiers abonnements payants |
