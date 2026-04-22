@@ -203,7 +203,6 @@ Un shop obtient le badge s'il coche **les 4 critères non-négociables** :
 
 ### 8.6 Analytics
 - **Vercel Analytics** (trafic de base).
-- **PostHog** (product analytics, funnels, session replay) — free tier généreux.
 - **Plausible** ou **Umami** si on veut du simple et RGPD-friendly.
 
 ### 8.7 SEO & contenu
@@ -452,7 +451,7 @@ events (id, title, shop_id, starts_at, ticket_url, ...)
 | 1 | Setup stack, design system, Supabase schema, auth, modèle shop, page d'accueil, manifeste, critères publics |
 | 2 | Carte interactive, fiche shop, seeding 30 premiers shops Paris, premier city guide |
 | 3 | Comptes users, favoris, reviews, carnet de dégustation, **MVP public "soft launch"** |
-| 4 | Blog/city guides (5 villes), SEO solide, Sentry/PostHog |
+| 4 | Blog/city guides (5 villes), SEO solide, Sentry |
 | 5 | Newsletter, badge Selection UI, 100 shops, presse |
 | 6 | **Launch officiel**, soirée, relations presse, annuaire torréfacteurs |
 | 7–8 | Stripe, dashboard Pro, premiers abonnements payants |
