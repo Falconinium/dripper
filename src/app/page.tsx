@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { CitySearch } from '@/components/city-search';
+import { HeroSearch } from '@/components/hero-search';
 import { ShopCard } from '@/components/shop-card';
 import { Button } from '@/components/ui/button';
 import { listCities } from '@/lib/cities';
@@ -27,7 +27,7 @@ const pillars = [
 export default async function HomePage() {
   const supabase = await createClient();
 
-  const [shopsRes, guides, cities] = await Promise.all([
+  const [shopsRes, allShopsRes, guides, cities] = await Promise.all([
     supabase
       .from('shops')
       .select('id, slug, name, city, description, is_selection, photos')
@@ -35,9 +35,16 @@ export default async function HomePage() {
       .eq('is_selection', true)
       .order('name')
       .limit(6),
+    supabase
+      .from('shops')
+      .select('slug, name, city')
+      .eq('status', 'published')
+      .order('name'),
     listContent('guides'),
     listCities(),
   ]);
+
+  const allShops = allShopsRes.data ?? [];
 
   const featured = shopsRes.data ?? [];
   const latestGuides = guides.slice(0, 3);
@@ -76,7 +83,7 @@ export default async function HomePage() {
         </p>
 
         <div className="w-full max-w-xl pt-2">
-          <CitySearch cities={cities} />
+          <HeroSearch cities={cities} shops={allShops} />
         </div>
 
         {topCities.length ? (
@@ -101,7 +108,7 @@ export default async function HomePage() {
             <Link href="/carte">Explorer la carte</Link>
           </Button>
           <Button asChild size="lg" variant="ghost">
-            <Link href="/selection">Les critères Sélection</Link>
+            <Link href="/selection/criteres">Les critères Sélection</Link>
           </Button>
         </div>
       </section>
@@ -119,7 +126,7 @@ export default async function HomePage() {
                 </h2>
               </div>
               <Link
-                href="/selection"
+                href="/shops?selection=1"
                 className="text-muted-foreground hover:text-foreground hidden text-sm underline underline-offset-4 md:block"
               >
                 Voir toutes les adresses
