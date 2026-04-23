@@ -14,8 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .select('slug, updated_at')
     .eq('status', 'published');
 
-  const [blogSlugs, guideSlugs, cities] = await Promise.all([
-    getAllSlugs('blog'),
+  const [guideSlugs, cities] = await Promise.all([
     getAllSlugs('guides'),
     listCities(),
   ]);
@@ -24,10 +23,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '',
     '/carte',
     '/shops',
-    '/selection',
     '/selection/criteres',
     '/manifeste',
-    '/blog',
     '/guides',
     '/torrefacteurs',
   ].map((path) => ({
@@ -41,12 +38,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: s.updated_at ? new Date(s.updated_at) : undefined,
     changeFrequency: 'weekly',
     priority: 0.8,
-  }));
-
-  const blogEntries: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-    url: `${BASE}/blog/${slug}`,
-    changeFrequency: 'monthly',
-    priority: 0.6,
   }));
 
   const guideEntries: MetadataRoute.Sitemap = guideSlugs.map((slug) => ({
@@ -65,7 +56,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...staticEntries,
     ...shopEntries,
     ...cityEntries,
-    ...blogEntries,
     ...guideEntries,
   ];
 }

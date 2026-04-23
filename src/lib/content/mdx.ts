@@ -4,7 +4,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import readingTime from 'reading-time';
 
-export type ContentKind = 'guides' | 'blog';
+export type ContentKind = 'guides';
 
 export type ContentMeta = {
   slug: string;
