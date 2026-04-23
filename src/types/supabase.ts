@@ -388,6 +388,105 @@ export type Database = {
         }
         Relationships: []
       }
+      shop_claims: {
+        Row: {
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          domain_skipped: boolean
+          domain_verification_code: string | null
+          domain_verification_email: string | null
+          domain_verified_at: string | null
+          full_name: string
+          id: string
+          phone: string
+          pro_email: string
+          rejection_reason: string | null
+          role_in_company: string
+          shop_id: string
+          siret: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          domain_skipped?: boolean
+          domain_verification_code?: string | null
+          domain_verification_email?: string | null
+          domain_verified_at?: string | null
+          full_name: string
+          id?: string
+          phone: string
+          pro_email: string
+          rejection_reason?: string | null
+          role_in_company: string
+          shop_id: string
+          siret: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          domain_skipped?: boolean
+          domain_verification_code?: string | null
+          domain_verification_email?: string | null
+          domain_verified_at?: string | null
+          full_name?: string
+          id?: string
+          phone?: string
+          pro_email?: string
+          rejection_reason?: string | null
+          role_in_company?: string
+          shop_id?: string
+          siret?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shop_claims_decided_by_fkey"
+            columns: ["decided_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shop_claims_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shop_scores"
+            referencedColumns: ["shop_id"]
+          },
+          {
+            foreignKeyName: "shop_claims_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shops"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shop_claims_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shops_public"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shop_claims_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       shop_roasters: {
         Row: {
           created_at: string
