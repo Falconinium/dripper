@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase/server';
 
-import { removeFavorite, signOut } from './actions';
+import { signOut } from './actions';
 import { ProfileForm } from './profile-form';
 
 export const metadata: Metadata = { title: 'Mon compte' };
@@ -23,15 +23,6 @@ export default async function MonComptePage() {
     .select('username, display_name, role, bio')
     .eq('id', user.id)
     .maybeSingle();
-
-  const { data: favorites } = await supabase
-    .from('favorites')
-    .select('shop_id, created_at, shops:shops!inner(slug, name, city, status)')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false });
-
-  const publishedFavorites =
-    favorites?.filter((f) => f.shops && f.shops.status === 'published') ?? [];
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-20 md:py-28">
@@ -63,58 +54,21 @@ export default async function MonComptePage() {
         />
       </section>
 
-      <section className="mt-16">
-        <h2 className="font-serif text-2xl mb-4">
-          Favoris ({publishedFavorites.length})
-        </h2>
-        {!publishedFavorites.length ? (
-          <p className="text-muted-foreground text-sm">
-            Aucun favori. Parcourez la{' '}
-            <Link href="/carte" className="underline underline-offset-4">
-              carte
-            </Link>
-            .
-          </p>
-        ) : (
-          <ul className="divide-border divide-y">
-            {publishedFavorites.map((f) => {
-              const remove = async () => {
-                'use server';
-                await removeFavorite(f.shop_id);
-              };
-              return (
-                <li key={f.shop_id} className="flex items-center justify-between py-4">
-                  <div>
-                    <Link
-                      href={`/shops/${f.shops!.slug}`}
-                      className="font-medium hover:underline underline-offset-4"
-                    >
-                      {f.shops!.name}
-                    </Link>
-                    {f.shops!.city ? (
-                      <p className="text-muted-foreground text-xs">{f.shops!.city}</p>
-                    ) : null}
-                  </div>
-                  <form action={remove}>
-                    <button
-                      type="submit"
-                      className="text-muted-foreground hover:text-destructive text-xs"
-                    >
-                      Retirer
-                    </button>
-                  </form>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
-
-      <form action={signOut} className="mt-16">
-        <Button type="submit" variant="outline">
-          Se déconnecter
+      <div className="mt-16 flex flex-wrap items-center gap-3">
+        <Button asChild variant="outline">
+          <Link href="/mes-favoris">Mes favoris</Link>
         </Button>
-      </form>
+        {profile?.role === 'admin' ? (
+          <Button asChild variant="outline">
+            <Link href="/admin">Accès admin</Link>
+          </Button>
+        ) : null}
+        <form action={signOut}>
+          <Button type="submit" variant="outline">
+            Se déconnecter
+          </Button>
+        </form>
+      </div>
     </main>
   );
 }

@@ -1,14 +1,13 @@
 import Link from 'next/link';
 
+import { HeaderMobileMenu } from '@/components/header-mobile-menu';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { createClient } from '@/lib/supabase/server';
 
 const navLinks = [
-  { href: '/carte', label: 'Carte' },
-  { href: '/selection', label: 'Sélection' },
+  { href: '/selection/criteres', label: 'Sélection' },
   { href: '/guides', label: 'Guides' },
-  { href: '/blog', label: 'Journal' },
 ];
 
 export async function Header() {
@@ -16,6 +15,9 @@ export async function Header() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const accountHref = user ? '/mon-compte' : '/connexion';
+  const accountLabel = user ? 'Mon compte' : 'Connexion';
 
   return (
     <header className="border-border/60 bg-background/80 sticky top-0 z-40 w-full border-b backdrop-blur-md">
@@ -33,16 +35,32 @@ export async function Header() {
                 </Link>
               </li>
             ))}
+            {user ? (
+              <li>
+                <Link
+                  href="/mes-favoris"
+                  className="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm transition-colors"
+                >
+                  Mes favoris
+                </Link>
+              </li>
+            ) : null}
             <li>
               <Link
-                href={user ? '/mon-compte' : '/connexion'}
+                href={accountHref}
                 className="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm transition-colors"
               >
-                {user ? 'Mon compte' : 'Connexion'}
+                {accountLabel}
               </Link>
             </li>
           </ul>
           <ThemeToggle />
+          <HeaderMobileMenu
+            links={navLinks}
+            accountHref={accountHref}
+            accountLabel={accountLabel}
+            showFavorites={!!user}
+          />
         </nav>
       </div>
     </header>

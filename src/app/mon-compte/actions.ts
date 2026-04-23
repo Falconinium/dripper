@@ -52,13 +52,3 @@ export async function updateProfile(
   revalidatePath('/mon-compte');
   return { status: 'success', message: 'Profil mis à jour.' };
 }
-
-export async function removeFavorite(shopId: string) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return;
-  await supabase.from('favorites').delete().eq('shop_id', shopId).eq('user_id', user.id);
-  revalidatePath('/mon-compte');
-}
