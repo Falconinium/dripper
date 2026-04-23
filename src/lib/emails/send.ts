@@ -2,6 +2,7 @@ import 'server-only';
 
 import { APP_URL, EMAIL_FROM, resend } from './resend';
 import { ClaimApprovedEmail } from './templates/claim-approved';
+import { ClaimReceivedEmail } from './templates/claim-received';
 import { ClaimRejectedEmail } from './templates/claim-rejected';
 import { ClaimVerificationEmail } from './templates/claim-verification';
 
@@ -25,6 +26,21 @@ async function send(params: {
   if (error) {
     console.error('[emails] send failed', error);
   }
+}
+
+export async function sendClaimReceived(args: {
+  to: string;
+  shopName: string;
+  needsVerification: boolean;
+}) {
+  await send({
+    to: args.to,
+    subject: `Votre demande pour ${args.shopName} a bien été reçue`,
+    react: ClaimReceivedEmail({
+      shopName: args.shopName,
+      needsVerification: args.needsVerification,
+    }),
+  });
 }
 
 export async function sendClaimVerification(args: {

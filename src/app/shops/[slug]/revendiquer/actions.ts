@@ -8,7 +8,7 @@ import {
   extractDomainFromUrl,
   generateVerificationCode,
 } from '@/lib/claims/domain';
-import { sendClaimVerification } from '@/lib/emails/send';
+import { sendClaimReceived, sendClaimVerification } from '@/lib/emails/send';
 import { createClient } from '@/lib/supabase/server';
 
 export type ClaimFormState =
@@ -96,6 +96,12 @@ export async function submitClaim(
       : error.message;
     return { status: 'error', message: msg };
   }
+
+  await sendClaimReceived({
+    to: pro_email,
+    shopName: shop.name,
+    needsVerification: needsDomainVerif,
+  });
 
   if (needsDomainVerif && code) {
     await sendClaimVerification({
