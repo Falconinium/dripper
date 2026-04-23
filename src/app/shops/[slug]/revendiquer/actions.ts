@@ -62,16 +62,12 @@ export async function submitClaim(
   }
 
   const siteDomain = extractDomainFromUrl(shop.website);
-  const needsDomainVerif = Boolean(siteDomain);
-  const emailOk = siteDomain ? emailMatchesDomain(pro_email, siteDomain) : true;
-
-  if (needsDomainVerif && !emailOk) {
-    return {
-      status: 'error',
-      message: `L’email doit être du domaine @${siteDomain}. Sinon l’admin validera manuellement après envoi.`,
-    };
-  }
-
+  const emailMatchesSite = siteDomain
+    ? emailMatchesDomain(pro_email, siteDomain)
+    : false;
+  // Code verification runs only when the pro_email is on the shop's own
+  // domain. Otherwise admin validates manually (domain_skipped=true).
+  const needsDomainVerif = emailMatchesSite;
   const code = needsDomainVerif ? generateVerificationCode() : null;
 
   // Upsert-ish: cancel any prior rejected claim is already allowed by the

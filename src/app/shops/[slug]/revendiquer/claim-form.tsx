@@ -46,6 +46,7 @@ export function ClaimForm({
         name="siret"
         pattern="\d{14}"
         inputMode="numeric"
+        maxLength={14}
         placeholder="14 chiffres"
         required
       />
