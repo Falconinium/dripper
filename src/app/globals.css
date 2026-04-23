@@ -96,3 +96,15 @@
     @apply font-serif tracking-tight;
   }
 }
+
+/* Mapbox popup: force light background + dark text in both themes */
+.mapboxgl-popup-content {
+  background: #ffffff !important;
+  color: #0a0a0a !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+}
+.mapboxgl-popup-tip {
+  border-top-color: #ffffff !important;
+  border-bottom-color: #ffffff !important;
+}

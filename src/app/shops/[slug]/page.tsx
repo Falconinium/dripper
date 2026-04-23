@@ -178,11 +178,13 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
         {shop.city ?? 'Coffee shop'}
         {shop.is_selection ? ' · Sélection Dripper' : ''}
       </p>
-      <div className="flex flex-wrap items-start justify-between gap-6">
-        <h1 className="font-serif text-5xl leading-[1.05] md:text-6xl">
+      <div className="flex items-start justify-between gap-4">
+        <h1 className="font-serif min-w-0 flex-1 text-4xl leading-[1.05] md:max-w-[20ch] md:text-6xl">
           <em className="italic">{shop.name}</em>
         </h1>
-        <FavoriteButton shopId={shop.id} slug={slug} isFavorite={isFavorite} authed={!!user} />
+        <div className="shrink-0">
+          <FavoriteButton shopId={shop.id} slug={slug} isFavorite={isFavorite} authed={!!user} />
+        </div>
       </div>
 
       {shop.description ? (

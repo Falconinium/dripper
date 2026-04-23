@@ -33,7 +33,7 @@ export function ShopCard({
 
   return (
     <Link href={`/shops/${slug}`} className="group block">
-      <div className="bg-muted relative aspect-[4/5] w-full overflow-hidden rounded-2xl">
+      <div className="bg-muted relative aspect-[4/3] w-full overflow-hidden rounded-2xl md:aspect-[4/5]">
         {cover ? (
           <Image
             src={cover}

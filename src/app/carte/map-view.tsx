@@ -41,18 +41,18 @@ export function MapView({ pins, token }: { pins: ShopPin[]; token: string }) {
     const bounds = new mapboxgl.LngLatBounds();
 
     for (const pin of pins) {
-      const el = document.createElement('a');
-      el.href = `/shops/${pin.slug}`;
+      const el = document.createElement('button');
+      el.type = 'button';
       el.setAttribute('aria-label', pin.name);
       el.className = [
-        'block size-3.5 rounded-full border-2 shadow',
+        'block size-3.5 cursor-pointer rounded-full border-2 shadow',
         pin.isSelection ? 'bg-amber-200 border-neutral-900' : 'bg-neutral-900 border-white',
       ].join(' ');
 
       const popup = new mapboxgl.Popup({ offset: 14, closeButton: false }).setHTML(
-        `<div style="font-family:var(--font-sans);font-size:13px;line-height:1.4;padding:2px 2px 0"><div style="font-weight:500">${escapeHtml(
+        `<div style="font-family:var(--font-sans);font-size:13px;line-height:1.4;padding:2px 2px 0;color:#0a0a0a"><div style="font-weight:500">${escapeHtml(
           pin.name,
-        )}</div>${pin.city ? `<div style="opacity:.6">${escapeHtml(pin.city)}</div>` : ''}<div style="margin-top:4px"><a style="text-decoration:underline" href="/shops/${pin.slug}">Voir la fiche →</a></div></div>`,
+        )}</div>${pin.city ? `<div style="opacity:.6">${escapeHtml(pin.city)}</div>` : ''}<div style="margin-top:4px"><a style="text-decoration:underline;color:#0a0a0a" href="/shops/${pin.slug}">Voir la fiche →</a></div></div>`,
       );
 
       const marker = new mapboxgl.Marker({ element: el })
