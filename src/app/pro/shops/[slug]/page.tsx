@@ -4,6 +4,9 @@ import Link from 'next/link';
 import { requireShopOwner } from '@/lib/auth/require-owner';
 
 import { OwnerForm } from './owner-form';
+import { OwnerPhotoManager } from './photo-manager';
+
+type Photo = { url: string; path: string; alt?: string };
 
 export const metadata: Metadata = { title: 'Gérer mon shop' };
 
@@ -15,6 +18,12 @@ export default async function ProShopPage({
   const { slug } = await params;
   const { shop, isAdmin } = await requireShopOwner(slug);
 
+  const photos: Photo[] = Array.isArray(shop.photos)
+    ? (shop.photos as Photo[]).filter(
+        (p) => p && typeof p.url === 'string' && typeof p.path === 'string',
+      )
+    : [];
+
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-20 md:py-24">
       <p className="text-muted-foreground text-xs tracking-[0.25em] uppercase">
@@ -24,9 +33,8 @@ export default async function ProShopPage({
         Gérer <em className="italic">{shop.name}</em>
       </h1>
       <p className="text-muted-foreground mt-4 max-w-xl text-sm leading-relaxed">
-        Mettez à jour les informations publiques de votre shop. Les éléments
-        plus sensibles (adresse, label Sélection, photos) restent gérés par
-        l’équipe éditoriale —{' '}
+        Gérez vos photos et les informations publiques de votre shop.
+        L’adresse et le label Sélection restent sous contrôle éditorial —{' '}
         <Link
           href="mailto:contact@dripper.fr"
           className="underline underline-offset-4"
@@ -42,7 +50,18 @@ export default async function ProShopPage({
         </p>
       ) : null}
 
-      <div className="mt-12">
+      <section className="mt-12">
+        <h2 className="font-serif mb-4 text-2xl">Photos</h2>
+        <p className="text-muted-foreground mb-6 max-w-xl text-sm leading-relaxed">
+          La première photo sert de couverture sur la fiche et dans les
+          listes. Survolez une image pour la retirer ou la passer en
+          couverture.
+        </p>
+        <OwnerPhotoManager slug={slug} photos={photos} />
+      </section>
+
+      <section className="mt-16">
+        <h2 className="font-serif mb-4 text-2xl">Informations</h2>
         <OwnerForm
           slug={slug}
           initial={{
@@ -56,7 +75,7 @@ export default async function ProShopPage({
             options: shop.options,
           }}
         />
-      </div>
+      </section>
 
       <div className="mt-16 flex items-center gap-4 text-sm">
         <Link
