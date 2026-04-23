@@ -58,6 +58,9 @@ export default async function MonComptePage() {
         <Button asChild variant="outline">
           <Link href="/mes-favoris">Mes favoris</Link>
         </Button>
+        <Button asChild variant="outline">
+          <Link href="/mes-demandes">Mes demandes</Link>
+        </Button>
         {profile?.role === 'admin' ? (
           <Button asChild variant="outline">
             <Link href="/admin">Accès admin</Link>

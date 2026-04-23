@@ -406,6 +406,26 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
             label="Flat white"
             value={shop.avg_flat_white_price ? `${shop.avg_flat_white_price} €` : null}
           />
+          {!shop.claimed_by ? (
+            <div className="border-border mt-4 rounded-2xl border p-5">
+              <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
+                Propriétaire ?
+              </p>
+              <p className="mt-2 text-sm leading-relaxed">
+                Revendiquez ce shop pour gérer ses informations sur Dripper.
+              </p>
+              <Link
+                href={
+                  user
+                    ? `/shops/${slug}/revendiquer`
+                    : `/connexion?next=/shops/${slug}/revendiquer`
+                }
+                className="border-border hover:bg-muted/40 mt-3 inline-flex items-center rounded-full border px-4 py-2 text-xs transition-colors"
+              >
+                Revendiquer ce shop →
+              </Link>
+            </div>
+          ) : null}
         </aside>
       </div>
     </main>
