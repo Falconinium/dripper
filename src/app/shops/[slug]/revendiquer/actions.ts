@@ -8,6 +8,7 @@ import {
   extractDomainFromUrl,
   generateVerificationCode,
 } from '@/lib/claims/domain';
+import { sendClaimVerification } from '@/lib/emails/send';
 import { createClient } from '@/lib/supabase/server';
 
 export type ClaimFormState =
@@ -36,7 +37,7 @@ export async function submitClaim(
 
   const { data: shop } = await supabase
     .from('shops')
-    .select('id, website, claimed_by')
+    .select('id, name, website, claimed_by')
     .eq('slug', slug)
     .eq('status', 'published')
     .maybeSingle();
@@ -97,11 +98,11 @@ export async function submitClaim(
   }
 
   if (needsDomainVerif && code) {
-    // TODO(step 5): send email via Resend to pro_email with the 6-digit code.
-    // For now we log so the flow is testable end-to-end during development.
-    console.log(
-      `[claims] verification code for claim ${inserted.id} (${pro_email}): ${code}`,
-    );
+    await sendClaimVerification({
+      to: pro_email,
+      shopName: shop.name,
+      code,
+    });
     redirect(`/shops/${slug}/revendiquer/verifier?claim=${inserted.id}`);
   }
 

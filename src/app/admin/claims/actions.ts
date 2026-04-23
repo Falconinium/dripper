@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { requireAdmin } from '@/lib/auth/require-admin';
+import { sendClaimApproved, sendClaimRejected } from '@/lib/emails/send';
 import { createClient } from '@/lib/supabase/server';
 
 function trim(v: FormDataEntryValue | null): string {
@@ -19,7 +20,7 @@ export async function approveClaim(formData: FormData): Promise<void> {
 
   const { data: claim } = await supabase
     .from('shop_claims')
-    .select('id, shop_id, user_id, status')
+    .select('id, shop_id, user_id, status, pro_email, shops(name, slug)')
     .eq('id', claimId)
     .maybeSingle();
 
@@ -58,7 +59,13 @@ export async function approveClaim(formData: FormData): Promise<void> {
     })
     .eq('id', claimId);
 
-  // TODO(step 5): send "claim approved" email to the claimant.
+  if (claim.shops) {
+    await sendClaimApproved({
+      to: claim.pro_email,
+      shopName: claim.shops.name,
+      shopSlug: claim.shops.slug,
+    });
+  }
 
   revalidatePath('/admin/claims');
   revalidatePath('/mes-demandes');
@@ -75,7 +82,7 @@ export async function rejectClaim(formData: FormData): Promise<void> {
 
   const { data: claim } = await supabase
     .from('shop_claims')
-    .select('id, status')
+    .select('id, status, pro_email, shops(name)')
     .eq('id', claimId)
     .maybeSingle();
 
@@ -93,7 +100,13 @@ export async function rejectClaim(formData: FormData): Promise<void> {
     })
     .eq('id', claimId);
 
-  // TODO(step 5): send "claim rejected" email to the claimant.
+  if (claim.shops) {
+    await sendClaimRejected({
+      to: claim.pro_email,
+      shopName: claim.shops.name,
+      reason: reason || null,
+    });
+  }
 
   revalidatePath('/admin/claims');
   revalidatePath('/mes-demandes');
