@@ -7,7 +7,7 @@ import { SignInForm } from './sign-in-form';
 
 export const metadata: Metadata = {
   title: 'Connexion',
-  description: 'Recevez un lien de connexion par email. Pas de mot de passe à retenir.',
+  description: 'Connectez-vous à votre compte Dripper ou créez-en un.',
 };
 
 export default async function ConnexionPage() {
@@ -28,7 +28,9 @@ export default async function ConnexionPage() {
         <br />
         <em className="italic">Dripper.</em>
       </h1>
-      <p className="text-muted-foreground mt-4 mb-10">Un lien dans votre boîte mail suffit.</p>
+      <p className="text-muted-foreground mt-4 mb-10">
+        Connectez-vous ou créez votre compte en quelques secondes.
+      </p>
       <SignInForm />
     </main>
   );
