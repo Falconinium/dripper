@@ -4,7 +4,13 @@ import { createClient } from '@/lib/supabase/server';
 
 export default async function AdminHome() {
   const supabase = await createClient();
-  const { count } = await supabase.from('shops').select('*', { count: 'exact', head: true });
+  const [{ count: shopsCount }, { count: pendingClaims }] = await Promise.all([
+    supabase.from('shops').select('*', { count: 'exact', head: true }),
+    supabase
+      .from('shop_claims')
+      .select('*', { count: 'exact', head: true })
+      .eq('status', 'pending'),
+  ]);
 
   return (
     <div className="space-y-8">
@@ -14,8 +20,18 @@ export default async function AdminHome() {
           className="border-border hover:bg-muted/40 rounded-md border p-6 transition-colors"
         >
           <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase">Shops</p>
-          <p className="mt-2 font-serif text-4xl">{count ?? 0}</p>
+          <p className="mt-2 font-serif text-4xl">{shopsCount ?? 0}</p>
           <p className="text-muted-foreground mt-2 text-sm">Référencés</p>
+        </Link>
+        <Link
+          href="/admin/claims"
+          className="border-border hover:bg-muted/40 rounded-md border p-6 transition-colors"
+        >
+          <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
+            Revendications
+          </p>
+          <p className="mt-2 font-serif text-4xl">{pendingClaims ?? 0}</p>
+          <p className="text-muted-foreground mt-2 text-sm">En attente</p>
         </Link>
       </div>
     </div>
