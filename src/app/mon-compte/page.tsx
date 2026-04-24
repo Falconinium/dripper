@@ -18,11 +18,21 @@ export default async function MonComptePage() {
 
   if (!user) redirect('/connexion');
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('username, display_name, role, bio')
-    .eq('id', user.id)
-    .maybeSingle();
+  const [{ data: profile }, { data: ownedShops }] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('username, display_name, role, bio')
+      .eq('id', user.id)
+      .maybeSingle(),
+    supabase
+      .from('shops')
+      .select('slug, name')
+      .eq('claimed_by', user.id)
+      .eq('status', 'published')
+      .order('name'),
+  ]);
+
+  const shops = ownedShops ?? [];
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-20 md:py-28">
@@ -53,6 +63,23 @@ export default async function MonComptePage() {
           }}
         />
       </section>
+
+      {shops.length ? (
+        <section className="mt-12">
+          <h2 className="font-serif mb-4 text-2xl">Mes shops</h2>
+          <ul className="flex flex-wrap gap-3">
+            {shops.map((s) => (
+              <li key={s.slug}>
+                <Button asChild variant="outline">
+                  <Link href={`/pro/shops/${s.slug}`}>
+                    Gérer {s.name} →
+                  </Link>
+                </Button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <div className="mt-16 flex flex-wrap items-center gap-3">
         <Button asChild variant="outline">
