@@ -52,11 +52,25 @@ export default async function ProShopPage({
 
       <section className="mt-12">
         <h2 className="font-serif mb-4 text-2xl">Photos</h2>
-        <p className="text-muted-foreground mb-6 max-w-xl text-sm leading-relaxed">
+        <p className="text-muted-foreground mb-4 max-w-xl text-sm leading-relaxed">
           La première photo sert de couverture sur la fiche et dans les
           listes. Survolez une image pour la retirer ou la passer en
           couverture.
         </p>
+        <div className="border-border bg-muted/40 mb-6 max-w-xl rounded-md border p-4 text-sm leading-relaxed">
+          <p className="text-foreground text-xs tracking-[0.2em] uppercase">
+            Format recommandé
+          </p>
+          <p className="text-muted-foreground mt-2">
+            Privilégiez des photos en{' '}
+            <strong className="text-foreground">paysage (ratio 16:9)</strong>,
+            d’une largeur minimale de{' '}
+            <strong className="text-foreground">1600&nbsp;px</strong> et d’un
+            poids inférieur à 8&nbsp;Mo. Les formats portrait ou carré
+            s’affichent sur fond flouté sur desktop, mais seront recadrés
+            sur mobile et dans les listes.
+          </p>
+        </div>
         <OwnerPhotoManager slug={slug} photos={photos} />
       </section>
 
