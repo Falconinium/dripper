@@ -91,7 +91,7 @@ export function PhotoCarousel({
               alt=""
               aria-hidden
               fill
-              className="object-cover scale-110 blur-2xl opacity-60"
+              className="hidden object-cover scale-110 blur-2xl opacity-60 md:block"
               sizes="(min-width: 1024px) 64rem, 100vw"
               priority={i === 0 ? Boolean(priority) : false}
               loading={priority && i === 0 ? 'eager' : 'lazy'}
@@ -101,7 +101,7 @@ export function PhotoCarousel({
               src={p.url}
               alt={p.alt ?? name}
               fill
-              className="object-contain"
+              className="object-cover md:object-contain"
               sizes="(min-width: 1024px) 64rem, 100vw"
               priority={i === 0 ? Boolean(priority) : false}
               fetchPriority={priority && i === 0 ? 'high' : 'auto'}
