@@ -65,8 +65,8 @@ export default async function ProShopPage({
             Privilégiez des photos en{' '}
             <strong className="text-foreground">paysage (ratio 16:9)</strong>,
             d’une largeur minimale de{' '}
-            <strong className="text-foreground">1600&nbsp;px</strong> et d’un
-            poids inférieur à 8&nbsp;Mo. Les formats portrait ou carré
+            <strong className="text-foreground">1600&nbsp;px</strong>
+            {' '}et d’un poids inférieur à 8&nbsp;Mo. Les formats portrait ou carré
             s’affichent sur fond flouté sur desktop, mais seront recadrés
             sur mobile et dans les listes.
           </p>
