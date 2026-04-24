@@ -82,15 +82,26 @@ export function PhotoCarousel({
         {photos.map((p, i) => (
           <div
             key={p.url}
-            className="relative aspect-[16/9] w-full shrink-0 snap-center"
+            className="relative aspect-[16/9] w-full shrink-0 snap-center overflow-hidden bg-black"
             aria-roledescription="slide"
             aria-label={`${i + 1} / ${count}`}
           >
             <Image
               src={p.url}
+              alt=""
+              aria-hidden
+              fill
+              className="object-cover scale-110 blur-2xl opacity-60"
+              sizes="(min-width: 1024px) 64rem, 100vw"
+              priority={i === 0 ? Boolean(priority) : false}
+              loading={priority && i === 0 ? 'eager' : 'lazy'}
+              unoptimized
+            />
+            <Image
+              src={p.url}
               alt={p.alt ?? name}
               fill
-              className="object-cover"
+              className="object-contain"
               sizes="(min-width: 1024px) 64rem, 100vw"
               priority={i === 0 ? Boolean(priority) : false}
               fetchPriority={priority && i === 0 ? 'high' : 'auto'}
