@@ -31,10 +31,9 @@ export async function submitReview(
 
   if (!user) redirect(`/connexion?next=/shops/${slug}`);
 
-  const cup = parseScore(formData.get('cup_score'));
   const exp = parseScore(formData.get('experience_score'));
-  if (cup === null || exp === null) {
-    return { status: 'error', message: 'Scores requis entre 1 et 10.' };
+  if (exp === null) {
+    return { status: 'error', message: 'Score requis entre 1 et 10.' };
   }
 
   const comment = String(formData.get('comment') ?? '').trim() || null;
@@ -44,7 +43,6 @@ export async function submitReview(
     {
       shop_id: shopId,
       user_id: user.id,
-      cup_score: cup,
       experience_score: exp,
       comment,
       drink_ordered: drink,

@@ -8,7 +8,7 @@ type ShopCardProps = {
   description?: string | null;
   is_selection?: boolean | null;
   photos?: unknown;
-  cup_score?: number | null;
+  score?: number | null;
   priority?: boolean;
 };
 
@@ -25,11 +25,11 @@ export function ShopCard({
   description,
   is_selection,
   photos,
-  cup_score,
+  score: scoreProp,
   priority,
 }: ShopCardProps) {
   const cover = firstPhotoUrl(photos);
-  const score = typeof cup_score === 'number' ? cup_score : null;
+  const score = typeof scoreProp === 'number' ? scoreProp : null;
 
   return (
     <Link href={`/shops/${slug}`} className="group block">

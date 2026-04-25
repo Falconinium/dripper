@@ -84,7 +84,6 @@ export default async function ProShopPage({
             website: shop.website,
             instagram: shop.instagram,
             espresso_machine: shop.espresso_machine,
-            avg_flat_white_price: shop.avg_flat_white_price,
             methods: shop.methods,
             options: shop.options,
           }}

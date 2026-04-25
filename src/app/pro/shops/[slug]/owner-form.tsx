@@ -34,7 +34,6 @@ export type OwnerInitial = {
   website?: string | null;
   instagram?: string | null;
   espresso_machine?: string | null;
-  avg_flat_white_price?: number | null;
   methods?: string[] | null;
   options?: string[] | null;
 };
@@ -87,14 +86,6 @@ export function OwnerForm({ slug, initial }: { slug: string; initial: OwnerIniti
           defaultValue={initial.espresso_machine ?? ''}
         />
       </div>
-
-      <Field
-        label="Prix moyen flat white (€)"
-        name="avg_flat_white_price"
-        type="number"
-        step="0.1"
-        defaultValue={initial.avg_flat_white_price?.toString() ?? ''}
-      />
 
       <fieldset className="space-y-3">
         <legend className="text-sm font-medium">Méthodes</legend>

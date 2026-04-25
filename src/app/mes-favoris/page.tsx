@@ -32,14 +32,14 @@ export default async function MesFavorisPage() {
   if (publishedFavorites.length) {
     const { data: scores } = await supabase
       .from('shop_scores')
-      .select('shop_id, avg_cup_score')
+      .select('shop_id, avg_experience_score')
       .in(
         'shop_id',
         publishedFavorites.map((f) => f.shops!.id),
       );
     for (const row of scores ?? []) {
-      if (row.avg_cup_score !== null && row.shop_id) {
-        scoresByShop.set(row.shop_id, Number(row.avg_cup_score));
+      if (row.avg_experience_score !== null && row.shop_id) {
+        scoresByShop.set(row.shop_id, Number(row.avg_experience_score));
       }
     }
   }
@@ -84,7 +84,7 @@ export default async function MesFavorisPage() {
                   description={shop.description}
                   is_selection={shop.is_selection}
                   photos={shop.photos}
-                  cup_score={scoresByShop.get(shop.id) ?? null}
+                  score={scoresByShop.get(shop.id) ?? null}
                   priority={i === 0}
                 />
                 <form action={remove} className="mt-3 px-1">

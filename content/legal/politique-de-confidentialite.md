@@ -26,7 +26,7 @@ Compte tenu de la nature et du volume des traitements mis en œuvre au stade MVP
 | Catégorie | Données | Finalité |
 |---|---|---|
 | Compte utilisateur | adresse e-mail, mot de passe (haché), nom d'utilisateur, nom affiché, avatar, bio | Création et gestion du compte, authentification |
-| Contenus publiés | avis (note Tasse, note Expérience, commentaire, photos), carnet de dégustation, favoris | Fonctionnement du Service, enrichissement éditorial |
+| Contenus publiés | avis (note Expérience, commentaire, photos), favoris | Fonctionnement du Service, enrichissement éditorial |
 | Communications | contenu des e-mails échangés avec notre équipe | Support utilisateur, relation contractuelle |
 | Compte professionnel (shops Pro) | nom du gérant, e-mail, coordonnées bancaires (via Stripe), informations sur l'établissement | Facturation, gestion de l'abonnement |
 

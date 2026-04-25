@@ -88,12 +88,6 @@ export async function updateOwnedShop(
   const instagram = nullable(trim(fd.get('instagram')));
   const espresso_machine = nullable(trim(fd.get('espresso_machine')));
 
-  const priceRaw = trim(fd.get('avg_flat_white_price'));
-  const avg_flat_white_price = priceRaw ? Number(priceRaw) : null;
-  if (avg_flat_white_price !== null && Number.isNaN(avg_flat_white_price)) {
-    return { status: 'error', message: 'Prix invalide.' };
-  }
-
   const methods = filterKeys(fd.getAll('methods') as string[], METHOD_KEYS);
   const options = filterKeys(fd.getAll('options') as string[], OPTION_KEYS);
 
@@ -105,7 +99,6 @@ export async function updateOwnedShop(
       website,
       instagram,
       espresso_machine,
-      avg_flat_white_price,
       methods,
       options,
     })

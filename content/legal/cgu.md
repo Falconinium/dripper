@@ -15,7 +15,7 @@ L'accès au Service implique l'acceptation sans réserve des présentes CGU.
 Dripper est une plateforme éditoriale et communautaire dédiée au **café de spécialité en France**. Elle propose :
 
 - un **annuaire et une carte interactive** des coffee shops et torréfacteurs ;
-- un système de **notation en double score** (note Tasse / note Expérience) et d'**avis** publiés par les utilisateurs inscrits ;
+- un système de **notation** (note Expérience) et d'**avis** publiés par les utilisateurs inscrits ;
 - un **label « Sélection »** attribué éditorialement sur la base de critères publics ;
 - un **carnet de dégustation** personnel pour les utilisateurs inscrits ;
 - des **guides éditoriaux** par ville et des contenus de blog ;

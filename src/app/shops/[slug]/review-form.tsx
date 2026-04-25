@@ -11,7 +11,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { submitReview, type ReviewFormState } from './actions';
 
 type ExistingReview = {
-  cup_score: number | null;
   experience_score: number | null;
   comment: string | null;
   drink_ordered: string | null;
@@ -40,31 +39,17 @@ export function ReviewForm({
 
   return (
     <form action={formAction} className="space-y-4">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="space-y-2">
-          <Label htmlFor="cup_score">Tasse (1–10) *</Label>
-          <Input
-            id="cup_score"
-            name="cup_score"
-            type="number"
-            min={1}
-            max={10}
-            required
-            defaultValue={existing?.cup_score ?? ''}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="experience_score">Expérience (1–10) *</Label>
-          <Input
-            id="experience_score"
-            name="experience_score"
-            type="number"
-            min={1}
-            max={10}
-            required
-            defaultValue={existing?.experience_score ?? ''}
-          />
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="experience_score">Expérience (1–10) *</Label>
+        <Input
+          id="experience_score"
+          name="experience_score"
+          type="number"
+          min={1}
+          max={10}
+          required
+          defaultValue={existing?.experience_score ?? ''}
+        />
       </div>
 
       <div className="space-y-2">
