@@ -37,6 +37,12 @@ export const metadata: Metadata = {
     siteName: 'Dripper',
     locale: 'fr_FR',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Dripper — le guide des cafés de spécialité',
+    description:
+      'Le guide éditorial et communautaire des coffee shops français qui prennent le café au sérieux.',
+  },
 };
 
 export default function RootLayout({
