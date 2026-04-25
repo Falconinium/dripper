@@ -31,8 +31,8 @@ export function DeleteAccount({ ownsShops }: { ownsShops: boolean }) {
       <h2 className="font-serif text-2xl">Supprimer mon compte</h2>
       <p className="text-muted-foreground mt-3 max-w-xl text-sm leading-relaxed">
         La suppression de votre compte est <strong>définitive</strong> et entraîne
-        l’effacement de votre profil, de vos avis, de votre carnet de
-        dégustation, de vos favoris et de vos demandes de revendication.
+        l’effacement de votre profil, de vos avis, de vos favoris et de vos
+        demandes de revendication.
         {ownsShops ? (
           <>
             {' '}Les fiches des shops que vous gérez ne sont pas supprimées :
