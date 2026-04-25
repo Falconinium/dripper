@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { createAdminClient } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
 
 export async function signOut() {
@@ -51,4 +52,32 @@ export async function updateProfile(
 
   revalidatePath('/mon-compte');
   return { status: 'success', message: 'Profil mis à jour.' };
+}
+
+export async function deleteAccount(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect('/connexion');
+
+  const confirm = String(formData.get('confirm') ?? '').trim();
+  if (confirm !== 'SUPPRIMER') {
+    redirect('/mon-compte?delete=invalid');
+  }
+
+  const admin = createAdminClient();
+
+  await admin
+    .from('shops')
+    .update({ claimed_by: null, subscription_tier: 'free', subscription_id: null })
+    .eq('claimed_by', user.id);
+
+  const { error } = await admin.auth.admin.deleteUser(user.id);
+  if (error) {
+    redirect(`/mon-compte?delete=error&msg=${encodeURIComponent(error.message)}`);
+  }
+
+  await supabase.auth.signOut();
+  redirect('/?account=deleted');
 }

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase/server';
 
 import { signOut } from './actions';
+import { DeleteAccount } from './delete-account';
 import { ProfileForm } from './profile-form';
 
 export const metadata: Metadata = { title: 'Mon compte' };
@@ -99,6 +100,8 @@ export default async function MonComptePage() {
           </Button>
         </form>
       </div>
+
+      <DeleteAccount ownsShops={shops.length > 0} />
     </main>
   );
 }
