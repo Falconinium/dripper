@@ -43,6 +43,12 @@ export const metadata: Metadata = {
     description:
       'Le guide éditorial et communautaire des coffee shops français qui prennent le café au sérieux.',
   },
+  applicationName: 'Dripper',
+  appleWebApp: {
+    capable: true,
+    title: 'Dripper',
+    statusBarStyle: 'black-translucent',
+  },
 };
 
 export default function RootLayout({
