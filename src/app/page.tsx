@@ -75,13 +75,16 @@ export default async function HomePage() {
         <p className="text-muted-foreground text-xs tracking-[0.25em] uppercase">
           Le guide du café de spécialité · France
         </p>
-        <h1 className="font-serif text-5xl leading-[1.02] font-normal md:text-7xl">
-          Là où{' '}
-          <RotatingWord
-            words={['le café', 'la tasse', 'le grain', 'l’origine']}
-          />
-          <br />
-          est pris <em className="italic">au sérieux.</em>
+        <h1 className="font-serif text-5xl leading-[1.05] font-normal md:text-7xl">
+          <span className="block">
+            Là où{' '}
+            <RotatingWord
+              words={['le café', 'la tasse', 'le grain', 'l’origine']}
+            />
+          </span>
+          <span className="block">
+            est pris <em className="italic">au sérieux.</em>
+          </span>
         </h1>
         <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed md:text-xl">
           Trouve les meilleurs coffee shops de spécialité dans ta ville. Grains
