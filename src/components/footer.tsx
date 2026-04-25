@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 const legalLinks = [
+  { href: '/proposer-un-shop', label: 'Proposer un shop' },
   { href: '/mentions-legales', label: 'Mentions légales' },
   { href: '/confidentialite', label: 'Confidentialité' },
   { href: '/cgu', label: 'CGU' },

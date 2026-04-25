@@ -1,10 +1,11 @@
 import 'server-only';
 
-import { APP_URL, EMAIL_FROM, resend } from './resend';
+import { ADMIN_EMAIL, APP_URL, EMAIL_FROM, resend } from './resend';
 import { ClaimApprovedEmail } from './templates/claim-approved';
 import { ClaimReceivedEmail } from './templates/claim-received';
 import { ClaimRejectedEmail } from './templates/claim-rejected';
 import { ClaimVerificationEmail } from './templates/claim-verification';
+import { SuggestionAdminEmail } from './templates/suggestion-admin';
 
 async function send(params: {
   to: string;
@@ -66,6 +67,25 @@ export async function sendClaimApproved(args: {
     react: ClaimApprovedEmail({
       shopName: args.shopName,
       manageUrl: `${APP_URL}/pro/shops/${args.shopSlug}`,
+    }),
+  });
+}
+
+export async function sendSuggestionToAdmin(args: {
+  shopName: string;
+  city: string | null;
+  address: string | null;
+  website: string | null;
+  instagram: string | null;
+  notes: string | null;
+  submittedBy: string;
+}) {
+  await send({
+    to: ADMIN_EMAIL,
+    subject: `Nouvelle proposition : ${args.shopName}`,
+    react: SuggestionAdminEmail({
+      ...args,
+      manageUrl: `${APP_URL}/admin/suggestions`,
     }),
   });
 }

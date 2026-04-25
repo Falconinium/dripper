@@ -7,6 +7,7 @@ const apiKey = process.env.RESEND_API_KEY;
 export const resend = apiKey ? new Resend(apiKey) : null;
 
 export const EMAIL_FROM = process.env.EMAIL_FROM ?? 'Dripper <hello@dripper.fr>';
+export const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'quentin.brisepierre2@protonmail.com';
 export const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
 export function isEmailConfigured(): boolean {

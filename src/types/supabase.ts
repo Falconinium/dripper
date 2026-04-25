@@ -537,6 +537,50 @@ export type Database = {
           },
         ]
       }
+      shop_suggestions: {
+        Row: {
+          address: string | null
+          city: string | null
+          created_at: string
+          id: string
+          instagram: string | null
+          name: string
+          notes: string | null
+          submitted_by: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          created_at?: string
+          id?: string
+          instagram?: string | null
+          name: string
+          notes?: string | null
+          submitted_by: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          created_at?: string
+          id?: string
+          instagram?: string | null
+          name?: string
+          notes?: string | null
+          submitted_by?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shop_suggestions_submitted_by_fkey"
+            columns: ["submitted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       shops: {
         Row: {
           address: string | null
@@ -1201,6 +1245,7 @@ export type Database = {
       geomfromewkt: { Args: { "": string }; Returns: unknown }
       gettransactionid: { Args: never; Returns: unknown }
       is_admin: { Args: { uid: string }; Returns: boolean }
+      is_shop_owner: { Args: { shop: string; uid: string }; Returns: boolean }
       longtransactionsenabled: { Args: never; Returns: boolean }
       populate_geometry_columns:
         | { Args: { tbl_oid: unknown; use_typmod?: boolean }; Returns: number }
