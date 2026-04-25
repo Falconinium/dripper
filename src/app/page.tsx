@@ -1,5 +1,8 @@
 import Link from 'next/link';
 
+import { Marquee } from '@/components/animated/marquee';
+import { Reveal } from '@/components/animated/reveal';
+import { RotatingWord } from '@/components/animated/rotating-word';
 import { HeroSearch } from '@/components/hero-search';
 import { ShopCard } from '@/components/shop-card';
 import { Button } from '@/components/ui/button';
@@ -72,10 +75,16 @@ export default async function HomePage() {
         <p className="text-muted-foreground text-xs tracking-[0.25em] uppercase">
           Le guide du café de spécialité · France
         </p>
-        <h1 className="font-serif text-5xl leading-[1.02] font-normal md:text-7xl">
-          Là où le café est pris
-          <br />
-          <em className="italic">au sérieux.</em>
+        <h1 className="font-serif text-5xl leading-[1.05] font-normal md:text-7xl">
+          <span className="block">
+            Là où{' '}
+            <RotatingWord
+              words={['le café', 'le grain', 'le filtre', 'l’espresso']}
+            />
+          </span>
+          <span className="block">
+            est pris <em className="italic">au sérieux.</em>
+          </span>
         </h1>
         <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed md:text-xl">
           Trouve les meilleurs coffee shops de spécialité dans ta ville. Grains
@@ -134,7 +143,7 @@ export default async function HomePage() {
             </div>
             <ul className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-2 md:gap-x-10 md:gap-y-16 lg:grid-cols-3 lg:gap-x-8">
               {featured.map((s, i) => (
-                <li key={s.slug}>
+                <Reveal key={s.slug} as="li" delay={i * 0.08}>
                   <ShopCard
                     slug={s.slug}
                     name={s.name}
@@ -145,7 +154,7 @@ export default async function HomePage() {
                     cup_score={scoresByShop.get(s.id) ?? null}
                     priority={i === 0}
                   />
-                </li>
+                </Reveal>
               ))}
             </ul>
           </div>
@@ -154,14 +163,25 @@ export default async function HomePage() {
 
       <section className="border-border/60 bg-muted/30 border-t">
         <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-20 md:grid-cols-3 md:py-24">
-          {pillars.map((p) => (
-            <article key={p.title} className="flex flex-col gap-3">
+          {pillars.map((p, i) => (
+            <Reveal
+              key={p.title}
+              as="article"
+              delay={i * 0.1}
+              className="flex flex-col gap-3"
+            >
               <h2 className="font-serif text-2xl leading-tight font-normal">{p.title}</h2>
               <p className="text-muted-foreground leading-relaxed">{p.body}</p>
-            </article>
+            </Reveal>
           ))}
         </div>
       </section>
+
+      {cities.length ? (
+        <section className="border-border/60 border-t border-b py-10 md:py-12">
+          <Marquee items={cities.map((c) => c.name)} />
+        </section>
+      ) : null}
 
       {latestGuides.length ? (
         <section className="border-border/60 border-t">
@@ -183,8 +203,8 @@ export default async function HomePage() {
               </Link>
             </div>
             <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-md border bg-border border-border md:grid-cols-3">
-              {latestGuides.map((g) => (
-                <li key={g.slug} className="bg-background">
+              {latestGuides.map((g, i) => (
+                <Reveal key={g.slug} as="li" delay={i * 0.08} className="bg-background">
                   <Link
                     href={`/guides/${g.slug}`}
                     className="hover:bg-muted/40 flex h-full flex-col gap-2 p-6 transition-colors"
@@ -199,7 +219,7 @@ export default async function HomePage() {
                       </p>
                     ) : null}
                   </Link>
-                </li>
+                </Reveal>
               ))}
             </ul>
           </div>
