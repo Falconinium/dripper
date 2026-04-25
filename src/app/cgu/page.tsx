@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
-export const metadata: Metadata = { title: 'Conditions générales d’utilisation et de vente' };
+export const metadata: Metadata = { title: 'Conditions générales d’utilisation' };
 
 const MAIL = 'quentin.brisepierre@protonmail.com';
 
@@ -12,12 +12,12 @@ export default function Page() {
         Informations légales
       </p>
       <h1 className="font-serif text-4xl leading-[1.05] font-normal tracking-tight md:text-5xl">
-        Conditions Générales d’Utilisation et de Vente
+        Conditions Générales d’Utilisation
       </h1>
 
       <div className="mt-10 space-y-8 text-base leading-relaxed">
         <p>
-          Les présentes Conditions Générales d’Utilisation et de Vente
+          Les présentes Conditions Générales d’Utilisation
           (ci-après «&nbsp;<strong>CGU</strong>&nbsp;») régissent
           l’utilisation du site et de l’application web{' '}
           <strong>Dripper</strong> (ci-après «&nbsp;le <strong>Service</strong>&nbsp;»),
@@ -65,11 +65,19 @@ export default function Page() {
               contenus de blog ;
             </li>
             <li>
-              un <strong>abonnement payant «&nbsp;Pro&nbsp;»</strong> à
-              destination des établissements référencés, leur permettant
-              d’enrichir leur fiche et d’accéder à des statistiques.
+              un <strong>espace «&nbsp;gérant&nbsp;»</strong> à destination
+              des établissements référencés, leur permettant de revendiquer
+              leur fiche et d’en enrichir le contenu (photos, description,
+              méthodes).
             </li>
           </ul>
+          <p>
+            À la date des présentes, <strong>l’intégralité du Service est
+            gratuite</strong>, pour les utilisateurs comme pour les
+            établissements. L’introduction de fonctionnalités ou d’offres
+            payantes pourra donner lieu à une mise à jour des présentes
+            CGU, notifiée dans les conditions prévues au §2.
+          </p>
         </section>
 
         <section className="space-y-3">
@@ -97,15 +105,11 @@ export default function Page() {
             </li>
             <li>
               ouvert à toute personne morale régulièrement constituée pour
-              les comptes Pro ;
+              les comptes gérant ;
             </li>
             <li>
-              gratuit pour les fonctionnalités de base (navigation,
-              consultation, création de compte) ;
-            </li>
-            <li>
-              soumis à abonnement pour les fonctionnalités
-              «&nbsp;Pro&nbsp;» destinées aux établissements (voir §7).
+              <strong>entièrement gratuit</strong> — aucune fonctionnalité
+              n’est soumise à paiement.
             </li>
           </ul>
 
@@ -275,87 +279,9 @@ export default function Page() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-2xl">7. Abonnement Pro (conditions de vente)</h2>
+          <h2 className="font-serif text-2xl">7. Responsabilité</h2>
 
-          <h3 className="font-serif text-lg">7.1. Description</h3>
-          <p>
-            L’abonnement Pro est un service payant destiné aux{' '}
-            <strong>professionnels</strong> (coffee shops, torréfacteurs)
-            permettant d’enrichir la fiche de l’établissement (photos HD
-            illimitées, menu dynamique, badge «&nbsp;Vérifié&nbsp;»),
-            d’accéder aux statistiques de consultation et de répondre aux
-            avis.
-          </p>
-
-          <h3 className="font-serif text-lg">7.2. Prix</h3>
-          <p>
-            Dripper étant placé sous le régime de la franchise en base de
-            TVA (art.&nbsp;293&nbsp;B du CGI), les prix affichés sont{' '}
-            <strong>nets de TVA</strong>&nbsp;: «&nbsp;TVA non applicable,
-            art.&nbsp;293&nbsp;B du CGI&nbsp;». En cas de dépassement du
-            seuil légal entraînant l’assujettissement à la TVA, les prix
-            seront ajustés conformément à la réglementation en vigueur,
-            les utilisateurs Pro étant informés au moins 30&nbsp;jours
-            avant la date d’effet. Des tarifs préférentiels peuvent être
-            proposés aux établissements labellisés «&nbsp;Sélection&nbsp;»
-            ou dans le cadre d’offres promotionnelles ponctuelles.
-          </p>
-
-          <h3 className="font-serif text-lg">7.3. Souscription et paiement</h3>
-          <p>
-            La souscription s’effectue en ligne depuis l’espace Pro. Le
-            paiement est réalisé par carte bancaire via notre prestataire{' '}
-            <strong>Stripe Payments Europe, Ltd.</strong>, certifié
-            PCI-DSS. Dripper ne stocke aucune donnée bancaire. La facture
-            est émise automatiquement et disponible dans l’espace Pro.
-          </p>
-
-          <h3 className="font-serif text-lg">7.4. Reconduction et résiliation</h3>
-          <p>
-            L’abonnement est <strong>reconduit tacitement</strong> à
-            l’échéance. Conformément à l’article L.&nbsp;215-1 du Code de
-            la consommation, le professionnel est informé de la
-            possibilité de ne pas reconduire son abonnement. La résiliation
-            s’effectue à tout moment depuis l’espace Pro ou par e-mail à{' '}
-            <Link href={`mailto:${MAIL}`} className="underline underline-offset-4">
-              {MAIL}
-            </Link>
-            , sans motif et sans frais. L’abonnement reste actif jusqu’à
-            la fin de la période payée.
-          </p>
-
-          <h3 className="font-serif text-lg">7.5. Droit de rétractation</h3>
-          <p>
-            <strong>
-              L’abonnement Pro est réservé aux professionnels agissant
-              dans le cadre de leur activité
-            </strong>
-            . Conformément à l’article L.&nbsp;221-3 du Code de la
-            consommation, le droit de rétractation de 14&nbsp;jours ne
-            s’applique pas aux contrats conclus entre professionnels
-            lorsque l’objet du contrat entre dans le champ de l’activité
-            principale du professionnel sollicité et que le nombre de
-            salariés employés est supérieur ou égal à cinq.
-          </p>
-          <p>
-            Pour les micro-entreprises éligibles, un droit de rétractation
-            de <strong>14&nbsp;jours</strong> est appliqué à compter de la
-            souscription, sauf exécution immédiate expressément demandée
-            par le professionnel.
-          </p>
-
-          <h3 className="font-serif text-lg">7.6. Défaut de paiement</h3>
-          <p>
-            En cas d’échec de prélèvement, Dripper peut suspendre l’accès
-            aux fonctionnalités Pro après deux relances infructueuses. Les
-            fonctionnalités redeviennent accessibles après régularisation.
-          </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="font-serif text-2xl">8. Responsabilité</h2>
-
-          <h3 className="font-serif text-lg">8.1. Responsabilité de Dripper</h3>
+          <h3 className="font-serif text-lg">7.1. Responsabilité de Dripper</h3>
           <p>
             Dripper est soumis à une{' '}
             <strong>obligation de moyens</strong>. Sa responsabilité ne
@@ -378,14 +304,13 @@ export default function Page() {
             </li>
           </ul>
           <p>
-            En tout état de cause, la responsabilité totale de Dripper
-            envers un utilisateur Pro ne pourra excéder le montant des
-            sommes effectivement versées par cet utilisateur au cours des{' '}
-            <strong>12&nbsp;derniers mois</strong> précédant le fait
-            générateur.
+            Le Service étant fourni à titre gratuit, la responsabilité de
+            Dripper est, dans toute la mesure permise par la loi, limitée
+            aux dommages directs, prévisibles et certains, résultant d’une
+            faute qui lui serait imputable.
           </p>
 
-          <h3 className="font-serif text-lg">8.2. Responsabilité de l’utilisateur</h3>
+          <h3 className="font-serif text-lg">7.2. Responsabilité de l’utilisateur</h3>
           <p>L’utilisateur est seul responsable&nbsp;:</p>
           <ul className="list-disc space-y-1 pl-6">
             <li>de l’exactitude des informations qu’il fournit ;</li>
@@ -396,7 +321,7 @@ export default function Page() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-2xl">9. Signalement d’un contenu illicite</h2>
+          <h2 className="font-serif text-2xl">8. Signalement d’un contenu illicite</h2>
           <p>
             Conformément à l’article 6-I-5 de la LCEN, toute personne peut
             signaler un contenu qu’elle estime manifestement illicite à{' '}
@@ -412,7 +337,7 @@ export default function Page() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-2xl">10. Données personnelles</h2>
+          <h2 className="font-serif text-2xl">9. Données personnelles</h2>
           <p>
             Le traitement des données personnelles est décrit dans la{' '}
             <Link href="/confidentialite" className="underline underline-offset-4">
@@ -423,7 +348,7 @@ export default function Page() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-2xl">11. Suspension et résiliation par Dripper</h2>
+          <h2 className="font-serif text-2xl">10. Suspension et résiliation par Dripper</h2>
           <p>
             Dripper peut suspendre ou résilier l’accès d’un utilisateur,
             avec ou sans préavis, en cas de&nbsp;:
@@ -446,79 +371,44 @@ export default function Page() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-2xl">12. Médiation et règlement des litiges</h2>
+          <h2 className="font-serif text-2xl">11. Règlement amiable et litiges</h2>
 
-          <h3 className="font-serif text-lg">
-            12.1. Médiation de la consommation (utilisateurs consommateurs)
-          </h3>
+          <h3 className="font-serif text-lg">11.1. Résolution amiable préalable</h3>
           <p>
-            Conformément à l’article L.&nbsp;612-1 du Code de la
-            consommation, l’utilisateur consommateur peut recourir
-            gratuitement au médiateur de la consommation désigné par
-            Dripper&nbsp;:
-          </p>
-          <p className="text-muted-foreground italic">
-            [Nom du médiateur à désigner — coordonnées et site web à
-            compléter avant le lancement commercial.]
-          </p>
-          <p>
-            Le recours à la médiation ne peut intervenir qu’après avoir
-            tenté de résoudre le litige directement auprès de{' '}
+            En cas de différend lié à l’utilisation du Service,
+            l’utilisateur est invité à contacter préalablement Dripper à
+            l’adresse{' '}
             <Link href={`mailto:${MAIL}`} className="underline underline-offset-4">
               {MAIL}
-            </Link>
-            .
+            </Link>{' '}
+            afin de rechercher une solution amiable.
           </p>
 
-          <h3 className="font-serif text-lg">12.2. Plateforme européenne RLL</h3>
-          <p>
-            Conformément au règlement (UE) n°&nbsp;524/2013, la Commission
-            européenne met à disposition une plateforme de règlement en
-            ligne des litiges&nbsp;:{' '}
-            <Link
-              href="https://ec.europa.eu/consumers/odr"
-              className="underline underline-offset-4"
-            >
-              ec.europa.eu/consumers/odr
-            </Link>
-            .
-          </p>
-
-          <h3 className="font-serif text-lg">12.3. Droit applicable — Juridiction</h3>
+          <h3 className="font-serif text-lg">11.2. Droit applicable — Juridiction</h3>
           <p>
             Les présentes CGU sont régies par le <strong>droit français</strong>.
-            En cas de litige non résolu à l’amiable&nbsp;:
+            À défaut de résolution amiable, les tribunaux français seront
+            seuls compétents, dans les conditions prévues par les
+            dispositions légales en vigueur.
           </p>
-          <ul className="list-disc space-y-1 pl-6">
-            <li>
-              pour les utilisateurs consommateurs&nbsp;: compétence du
-              tribunal du lieu du domicile du consommateur ou du lieu
-              d’exécution du contrat, au choix du demandeur ;
-            </li>
-            <li>
-              pour les utilisateurs professionnels&nbsp;: compétence
-              exclusive du <strong>Tribunal de commerce de Bonneville</strong>{' '}
-              (ressort du siège d’activité de Brisepierre).
-            </li>
-          </ul>
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-2xl">13. Dispositions diverses</h2>
+          <h2 className="font-serif text-2xl">12. Dispositions diverses</h2>
           <p>
-            <strong>13.1. Nullité partielle.</strong> Si l’une des
+            <strong>12.1. Nullité partielle.</strong> Si l’une des
             stipulations des CGU est déclarée nulle, cette nullité
             n’affecte pas les autres stipulations qui demeurent
             applicables.
           </p>
           <p>
-            <strong>13.2. Non-renonciation.</strong> Le fait pour Dripper
+            <strong>12.2. Non-renonciation.</strong> Le fait pour Dripper
             de ne pas se prévaloir à un moment donné d’une stipulation des
             CGU ne peut être interprété comme une renonciation à s’en
             prévaloir ultérieurement.
           </p>
           <p>
-            <strong>13.3. Intégralité.</strong> Les présentes CGU,
+            <strong>12.3. Intégralité.</strong> Les présentes CGU,
             ensemble avec les Mentions légales et la Politique de
             confidentialité, expriment l’intégralité de l’accord entre
             l’utilisateur et Dripper.
@@ -526,7 +416,7 @@ export default function Page() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="font-serif text-2xl">14. Contact</h2>
+          <h2 className="font-serif text-2xl">13. Contact</h2>
           <ul className="list-disc space-y-1 pl-6">
             <li>
               <strong>Questions générales</strong> :{' '}

@@ -89,9 +89,9 @@ export default function Page() {
                 'Support utilisateur, relation contractuelle',
               ],
               [
-                'Compte professionnel (shops Pro)',
-                'nom du gérant, e-mail, coordonnées bancaires (via Stripe), informations sur l’établissement',
-                'Facturation, gestion de l’abonnement',
+                'Compte gérant (revendication d’un établissement)',
+                'nom du gérant, e-mail professionnel, informations sur l’établissement',
+                'Vérification de la qualité de gérant et gestion de la fiche',
               ],
             ]}
           />
@@ -134,8 +134,8 @@ export default function Page() {
             rows={[
               ['Fourniture du Service (compte, carte, avis, carnet)', 'Exécution du contrat (art. 6-1-b)'],
               [
-                'Traitement des abonnements Pro et facturation',
-                'Exécution du contrat + obligation légale comptable (art. 6-1-b et c)',
+                'Vérification des demandes de revendication d’un établissement',
+                'Intérêt légitime (art. 6-1-f) — fiabilité de l’annuaire',
               ],
               ['Envoi de la newsletter', 'Consentement (art. 6-1-a) — révocable à tout moment'],
               [
@@ -221,10 +221,6 @@ export default function Page() {
               [
                 'Avis et contenus publiés',
                 'Conservés même après suppression du compte, anonymisés (le contenu éditorial est rattaché à un utilisateur anonymisé)',
-              ],
-              [
-                'Données de facturation (Pro)',
-                '10 ans (obligation comptable, art. L. 123-22 C. com.)',
               ],
               ['Journaux techniques', '12 mois maximum'],
               ['Newsletter', 'Jusqu’au retrait du consentement, puis suppression sous 30 jours'],
