@@ -226,6 +226,28 @@ export default async function HomePage() {
         </section>
       ) : null}
 
+      <section className="border-border/60 bg-muted/30 border-t border-b">
+        <div className="mx-auto flex w-full max-w-4xl flex-col items-start gap-6 px-6 py-20 md:py-24">
+          <p className="text-muted-foreground text-xs tracking-[0.25em] uppercase">
+            Communauté
+          </p>
+          <h2 className="font-serif text-3xl leading-tight font-normal md:text-4xl">
+            Une adresse <em className="italic">manquante</em>{' '}?
+          </h2>
+          <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
+            Vous connaissez un coffee shop sérieux qui n’est pas encore
+            référencé&nbsp;? Partagez-le avec nous. L’équipe éditoriale
+            relit chaque proposition au regard des critères Sélection.
+          </p>
+          <Link
+            href="/proposer-un-shop"
+            className="text-foreground underline underline-offset-4"
+          >
+            Proposer une adresse →
+          </Link>
+        </div>
+      </section>
+
       <section className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 py-24 md:py-32">
         <p className="text-muted-foreground text-xs tracking-[0.25em] uppercase">
           Découvrir
