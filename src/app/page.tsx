@@ -18,8 +18,8 @@ const pillars = [
     body: 'Une sélection de coffee shops français évalués sur ce qui compte : la qualité de la tasse, pas la déco Instagram.',
   },
   {
-    title: 'Double notation',
-    body: 'Un score Tasse distinct du score Expérience. Pour savoir enfin si un lieu sert un bon café, indépendamment du reste.',
+    title: 'Notation honnête',
+    body: 'Une note Expérience attribuée par les amateurs, pour savoir enfin si un lieu sert un bon café, indépendamment de la déco.',
   },
   {
     title: 'Transparence',
@@ -57,14 +57,14 @@ export default async function HomePage() {
   if (featured.length) {
     const { data: scores } = await supabase
       .from('shop_scores')
-      .select('shop_id, avg_cup_score')
+      .select('shop_id, avg_experience_score')
       .in(
         'shop_id',
         featured.map((s) => s.id),
       );
     for (const row of scores ?? []) {
-      if (row.avg_cup_score !== null && row.shop_id) {
-        scoresByShop.set(row.shop_id, Number(row.avg_cup_score));
+      if (row.avg_experience_score !== null && row.shop_id) {
+        scoresByShop.set(row.shop_id, Number(row.avg_experience_score));
       }
     }
   }
@@ -151,7 +151,7 @@ export default async function HomePage() {
                     description={s.description}
                     is_selection={s.is_selection}
                     photos={s.photos}
-                    cup_score={scoresByShop.get(s.id) ?? null}
+                    score={scoresByShop.get(s.id) ?? null}
                     priority={i === 0}
                   />
                 </Reveal>

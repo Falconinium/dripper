@@ -64,7 +64,6 @@ async function buildPayload(formData: FormData) {
       website: nullable(formData.get('website')),
       instagram: nullable(formData.get('instagram')),
       espresso_machine: nullable(formData.get('espresso_machine')),
-      avg_flat_white_price: parseNumber(formData.get('avg_flat_white_price')),
       methods: parseList(formData, 'methods', METHOD_KEYS),
       options: parseList(formData, 'options', OPTION_KEYS),
       is_selection: formData.get('is_selection') === 'on',

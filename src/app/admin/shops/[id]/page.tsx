@@ -104,7 +104,6 @@ export default async function EditShopPage({ params }: { params: Promise<{ id: s
             website: shop.website,
             instagram: shop.instagram,
             espresso_machine: shop.espresso_machine,
-            avg_flat_white_price: shop.avg_flat_white_price,
             methods: shop.methods,
             options: shop.options,
             is_selection: shop.is_selection,

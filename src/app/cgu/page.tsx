@@ -48,9 +48,8 @@ export default function Page() {
               coffee shops et torréfacteurs ;
             </li>
             <li>
-              un système de <strong>notation en double score</strong>{' '}
-              (note Tasse / note Expérience) et d’<strong>avis</strong>{' '}
-              publiés par les utilisateurs inscrits ;
+              un système de <strong>notation</strong> (note Expérience) et d’
+              <strong>avis</strong> publiés par les utilisateurs inscrits ;
             </li>
             <li>
               un <strong>label «&nbsp;Sélection&nbsp;»</strong> attribué

@@ -80,7 +80,7 @@ export default function Page() {
               ],
               [
                 'Contenus publiés',
-                'avis (note Tasse, note Expérience, commentaire, photos), carnet de dégustation, favoris',
+                'avis (note Expérience, commentaire, photos), favoris',
                 'Fonctionnement du Service, enrichissement éditorial',
               ],
               [

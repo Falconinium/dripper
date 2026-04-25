@@ -74,7 +74,7 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
   const [scoresRes, reviewsRes, myReviewRes, favRes, profileRes, roastersRes] = await Promise.all([
     supabase
       .from('shop_scores')
-      .select('avg_cup_score, avg_experience_score, review_count')
+      .select('avg_experience_score, review_count')
       .eq('shop_id', shop.id)
       .maybeSingle(),
     supabase
@@ -86,7 +86,7 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
     user
       ? supabase
           .from('reviews')
-          .select('cup_score, experience_score, comment, drink_ordered')
+          .select('experience_score, comment, drink_ordered')
           .eq('shop_id', shop.id)
           .eq('user_id', user.id)
           .maybeSingle()
@@ -155,11 +155,11 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
           },
         }
       : {}),
-    ...(scores?.avg_cup_score && scores?.review_count
+    ...(scores?.avg_experience_score && scores?.review_count
       ? {
           aggregateRating: {
             '@type': 'AggregateRating',
-            ratingValue: Number(scores.avg_cup_score),
+            ratingValue: Number(scores.avg_experience_score),
             reviewCount: scores.review_count,
             bestRating: 10,
             worstRating: 1,
@@ -200,7 +200,6 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
       <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-3">
         <div className="md:col-span-2 space-y-10">
           <Scores
-            cup={scores?.avg_cup_score}
             exp={scores?.avg_experience_score}
             count={scores?.review_count ?? 0}
           />
@@ -261,7 +260,6 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
                   existing={
                     myReview
                       ? {
-                          cup_score: myReview.cup_score,
                           experience_score: myReview.experience_score,
                           comment: myReview.comment,
                           drink_ordered: myReview.drink_ordered,
@@ -313,7 +311,7 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
                           </p>
                         </div>
                         <div className="text-muted-foreground text-xs tabular-nums">
-                          Tasse {r.cup_score}/10 · Exp. {r.experience_score}/10
+                          {r.experience_score}/10
                         </div>
                       </div>
                       {r.drink_ordered ? (
@@ -402,10 +400,6 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
             />
           ) : null}
           <InfoRow label="Machine espresso" value={shop.espresso_machine} />
-          <InfoRow
-            label="Flat white"
-            value={shop.avg_flat_white_price ? `${shop.avg_flat_white_price} €` : null}
-          />
           {!shop.claimed_by ? (
             <div className="border-border mt-4 rounded-2xl border p-5">
               <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
@@ -454,19 +448,16 @@ function Tags({ values, labels }: { values: string[]; labels: Record<string, str
 }
 
 function Scores({
-  cup,
   exp,
   count,
 }: {
-  cup: number | null | undefined;
   exp: number | null | undefined;
   count: number;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-6">
-      <ScoreCard label="Tasse" value={cup} />
+    <div className="space-y-3">
       <ScoreCard label="Expérience" value={exp} />
-      <p className="text-muted-foreground col-span-2 text-xs">
+      <p className="text-muted-foreground text-xs">
         {count === 0 ? 'Aucun avis pour le moment.' : `Moyenne sur ${count} avis Dripper.`}
       </p>
     </div>

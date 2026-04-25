@@ -282,7 +282,6 @@ export type Database = {
         Row: {
           comment: string | null
           created_at: string
-          cup_score: number | null
           drink_ordered: string | null
           experience_score: number | null
           id: string
@@ -295,7 +294,6 @@ export type Database = {
         Insert: {
           comment?: string | null
           created_at?: string
-          cup_score?: number | null
           drink_ordered?: string | null
           experience_score?: number | null
           id?: string
@@ -308,7 +306,6 @@ export type Database = {
         Update: {
           comment?: string | null
           created_at?: string
-          cup_score?: number | null
           drink_ordered?: string | null
           experience_score?: number | null
           id?: string
@@ -584,7 +581,6 @@ export type Database = {
       shops: {
         Row: {
           address: string | null
-          avg_flat_white_price: number | null
           city: string | null
           claimed_by: string | null
           created_at: string
@@ -612,7 +608,6 @@ export type Database = {
         }
         Insert: {
           address?: string | null
-          avg_flat_white_price?: number | null
           city?: string | null
           claimed_by?: string | null
           created_at?: string
@@ -640,7 +635,6 @@ export type Database = {
         }
         Update: {
           address?: string | null
-          avg_flat_white_price?: number | null
           city?: string | null
           claimed_by?: string | null
           created_at?: string
@@ -857,7 +851,6 @@ export type Database = {
           author_username: string | null
           comment: string | null
           created_at: string | null
-          cup_score: number | null
           drink_ordered: string | null
           experience_score: number | null
           id: string | null
@@ -898,7 +891,6 @@ export type Database = {
       }
       shop_scores: {
         Row: {
-          avg_cup_score: number | null
           avg_experience_score: number | null
           review_count: number | null
           shop_id: string | null
@@ -908,7 +900,6 @@ export type Database = {
       shops_public: {
         Row: {
           address: string | null
-          avg_flat_white_price: number | null
           city: string | null
           description: string | null
           espresso_machine: string | null
@@ -933,7 +924,6 @@ export type Database = {
         }
         Insert: {
           address?: string | null
-          avg_flat_white_price?: number | null
           city?: string | null
           description?: string | null
           espresso_machine?: string | null
@@ -958,7 +948,6 @@ export type Database = {
         }
         Update: {
           address?: string | null
-          avg_flat_white_price?: number | null
           city?: string | null
           description?: string | null
           espresso_machine?: string | null
