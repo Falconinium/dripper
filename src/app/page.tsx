@@ -79,7 +79,7 @@ export default async function HomePage() {
           <span className="block">
             Là où{' '}
             <RotatingWord
-              words={['le café', 'la tasse', 'le grain', 'l’origine']}
+              words={['le café', 'le grain', 'le filtre', 'l’espresso']}
             />
           </span>
           <span className="block">
