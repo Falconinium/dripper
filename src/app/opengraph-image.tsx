@@ -55,19 +55,19 @@ export default function OpenGraphImage() {
           >
             Le guide du café de spécialité · France
           </p>
-          <h1
+          <div
             style={{
-              fontSize: 96,
+              display: 'flex',
+              flexDirection: 'column',
+              fontSize: 88,
               lineHeight: 1.05,
-              margin: 0,
-              fontWeight: 400,
               fontFamily: 'serif',
-              maxWidth: 1000,
+              maxWidth: 1040,
             }}
           >
-            Là où le café est pris{' '}
+            <span>Là où le café est pris</span>
             <span style={{ fontStyle: 'italic' }}>au sérieux.</span>
-          </h1>
+          </div>
         </div>
 
         <p
