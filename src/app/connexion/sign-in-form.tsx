@@ -141,6 +141,29 @@ export function SignInForm() {
               autoComplete="new-password"
             />
           </div>
+          <label className="text-muted-foreground flex items-start gap-3 text-xs leading-relaxed">
+            <input
+              type="checkbox"
+              name="terms"
+              required
+              className="border-input mt-0.5 h-4 w-4 shrink-0 rounded"
+            />
+            <span>
+              J’accepte les{' '}
+              <Link href="/cgu" target="_blank" className="text-foreground underline underline-offset-4">
+                conditions générales d’utilisation
+              </Link>{' '}
+              et la{' '}
+              <Link
+                href="/confidentialite"
+                target="_blank"
+                className="text-foreground underline underline-offset-4"
+              >
+                politique de confidentialité
+              </Link>
+              .
+            </span>
+          </label>
           {signUpState.status === 'error' && signUpState.message ? (
             <p className="text-destructive text-sm">{signUpState.message}</p>
           ) : null}
