@@ -26,9 +26,9 @@ export default async function GuidesIndex() {
       {!guides.length ? (
         <p className="text-muted-foreground mt-12">Bientôt.</p>
       ) : (
-        <ul className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-md border bg-border border-border md:grid-cols-2">
+        <ul className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
           {guides.map((g) => (
-            <li key={g.slug} className="bg-background">
+            <li key={g.slug} className="border-border bg-background rounded-md border">
               <Link href={`/guides/${g.slug}`} className="hover:bg-muted/40 block p-6 transition-colors">
                 <p className="text-muted-foreground text-xs tracking-[0.15em] uppercase">
                   {g.city ?? 'Guide'}
