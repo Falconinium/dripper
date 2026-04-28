@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 
+import { ConfirmDeleteButton } from '@/components/admin/confirm-delete-button';
 import { createClient } from '@/lib/supabase/server';
 
 import { deleteShop, updateShop } from '../actions';
@@ -62,13 +63,12 @@ export default async function EditShopPage({ params }: { params: Promise<{ id: s
           <p className="text-muted-foreground text-sm">{shop.slug}</p>
         </div>
         <form action={deleteAction}>
-          <button
-            type="submit"
-            className="text-destructive hover:underline text-sm"
-            aria-label="Supprimer"
-          >
-            Supprimer
-          </button>
+          <ConfirmDeleteButton
+            message={`Supprimer définitivement "${shop.name}" ? Cette action est irréversible (avis, favoris, photos liés sont supprimés en cascade).`}
+            variant="link"
+            size="sm"
+            className="text-destructive p-0"
+          />
         </form>
       </div>
 

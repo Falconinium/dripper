@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 
+import { ConfirmDeleteButton } from '@/components/admin/confirm-delete-button';
 import { createClient } from '@/lib/supabase/server';
 
 import { deleteRoaster, updateRoaster } from '../actions';
@@ -44,9 +45,12 @@ export default async function EditRoasterPage({
           <p className="text-muted-foreground text-sm">{roaster.slug}</p>
         </div>
         <form action={del}>
-          <button type="submit" className="text-destructive text-sm hover:underline">
-            Supprimer
-          </button>
+          <ConfirmDeleteButton
+            message={`Supprimer définitivement le torréfacteur "${roaster.name}" ? Cette action est irréversible.`}
+            variant="link"
+            size="sm"
+            className="text-destructive p-0"
+          />
         </form>
       </div>
 
