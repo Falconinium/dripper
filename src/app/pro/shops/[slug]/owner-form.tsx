@@ -122,7 +122,7 @@ export function OwnerForm({ slug, initial }: { slug: string; initial: OwnerIniti
           type="checkbox"
           name="photo_rights"
           required
-          className="border-input mt-0.5 h-4 w-4 shrink-0 rounded"
+          className="border-input accent-foreground mt-0.5 h-4 w-4 shrink-0 rounded"
         />
         <span>
           Je certifie détenir les droits sur les photos ajoutées à cette fiche
