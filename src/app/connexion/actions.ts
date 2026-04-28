@@ -52,7 +52,16 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   const email = String(formData.get('email') ?? '').trim().toLowerCase();
   const password = String(formData.get('password') ?? '');
   const confirm = String(formData.get('confirm') ?? '');
+  const terms = formData.get('terms') === 'on';
 
+  if (!terms) {
+    return {
+      status: 'error',
+      mode: 'signup',
+      message: 'Vous devez accepter les CGU et la politique de confidentialité.',
+      email,
+    };
+  }
   if (!EMAIL_RE.test(email)) {
     return { status: 'error', mode: 'signup', message: 'Adresse email invalide.', email };
   }
