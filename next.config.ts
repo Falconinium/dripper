@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.join(__dirname),
   },
+  async redirects() {
+    return [
+      { source: '/selection/criteres', destination: '/selection', permanent: true },
+      { source: '/manifeste', destination: '/', permanent: true },
+    ];
+  },
 };
 
 const withMDX = createMDX({

@@ -117,7 +117,7 @@ export default async function HomePage() {
             <Link href="/carte">Explorer la carte</Link>
           </Button>
           <Button asChild size="lg" variant="ghost">
-            <Link href="/selection/criteres">Les critères Sélection</Link>
+            <Link href="/selection">Les critères Sélection</Link>
           </Button>
         </div>
       </section>

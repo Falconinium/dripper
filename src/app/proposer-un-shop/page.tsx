@@ -31,7 +31,7 @@ export default async function ProposeShopPage() {
       <p className="text-muted-foreground mt-3 max-w-xl text-sm leading-relaxed">
         Avant de soumettre, vérifiez que le shop coche les{' '}
         <Link
-          href="/selection/criteres"
+          href="/selection"
           className="text-foreground underline underline-offset-4"
         >
           critères Sélection

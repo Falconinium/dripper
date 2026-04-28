@@ -6,7 +6,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { createClient } from '@/lib/supabase/server';
 
 const navLinks = [
-  { href: '/selection/criteres', label: 'Sélection' },
+  { href: '/selection', label: 'Sélection' },
   { href: '/guides', label: 'Guides' },
 ];
 
