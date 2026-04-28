@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { listContent } from '@/lib/content/mdx';
 
 export const metadata: Metadata = {
-  title: 'Guides par ville',
+  title: 'Guides',
   description:
-    'Guides éditoriaux par ville : les meilleurs cafés de spécialité à Paris, Lyon, Bordeaux, Marseille et plus.',
+    'Guides éditoriaux Dripper : repérer un bon coffee shop, sélections par ville, méthodes d’extraction et bases du café de spécialité.',
 };
 
 export default async function GuidesIndex() {
@@ -16,11 +16,11 @@ export default async function GuidesIndex() {
     <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-20 md:py-28">
       <p className="text-muted-foreground mb-6 text-xs tracking-[0.25em] uppercase">Guides</p>
       <h1 className="font-serif text-5xl leading-[1.05] font-normal md:text-6xl">
-        Par <em className="italic">ville.</em>
+        Le guide du <em className="italic">café.</em>
       </h1>
       <p className="text-muted-foreground mt-6 max-w-xl">
-        Chaque guide recense les adresses qu’on recommande vraiment, et explique
-        pourquoi.
+        Comprendre ce qui distingue un vrai café de spécialité, repérer les bons
+        coffee shops, et découvrir des sélections par ville.
       </p>
 
       {!guides.length ? (
@@ -31,7 +31,7 @@ export default async function GuidesIndex() {
             <li key={g.slug} className="bg-background">
               <Link href={`/guides/${g.slug}`} className="hover:bg-muted/40 block p-6 transition-colors">
                 <p className="text-muted-foreground text-xs tracking-[0.15em] uppercase">
-                  {g.city ?? g.slug}
+                  {g.city ?? 'Guide'}
                 </p>
                 <h2 className="mt-2 font-serif text-2xl leading-tight">{g.title}</h2>
                 {g.excerpt ? (
