@@ -146,7 +146,7 @@ export function SignInForm() {
               type="checkbox"
               name="terms"
               required
-              className="border-input mt-0.5 h-4 w-4 shrink-0 rounded"
+              className="border-input accent-foreground mt-0.5 h-4 w-4 shrink-0 rounded"
             />
             <span>
               J’accepte les{' '}
