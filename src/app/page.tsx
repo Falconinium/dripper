@@ -192,7 +192,7 @@ export default async function HomePage() {
                   Guides
                 </p>
                 <h2 className="font-serif text-3xl leading-tight md:text-4xl">
-                  Par <em className="italic">ville.</em>
+                  Le guide du <em className="italic">café.</em>
                 </h2>
               </div>
               <Link
@@ -202,15 +202,20 @@ export default async function HomePage() {
                 Tous les guides
               </Link>
             </div>
-            <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-md border bg-border border-border md:grid-cols-3">
+            <ul className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {latestGuides.map((g, i) => (
-                <Reveal key={g.slug} as="li" delay={i * 0.08} className="bg-background">
+                <Reveal
+                  key={g.slug}
+                  as="li"
+                  delay={i * 0.08}
+                  className="border-border bg-background rounded-md border"
+                >
                   <Link
                     href={`/guides/${g.slug}`}
                     className="hover:bg-muted/40 flex h-full flex-col gap-2 p-6 transition-colors"
                   >
                     <p className="text-muted-foreground text-xs tracking-[0.15em] uppercase">
-                      {g.city ?? g.slug}
+                      {g.city ?? 'Guide'}
                     </p>
                     <h3 className="mt-2 font-serif text-xl leading-tight">{g.title}</h3>
                     {g.excerpt ? (
