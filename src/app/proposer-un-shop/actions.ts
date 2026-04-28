@@ -25,6 +25,14 @@ export async function submitSuggestion(
   } = await supabase.auth.getUser();
   if (!user) redirect('/connexion?next=/proposer-un-shop');
 
+  const terms = formData.get('terms') === 'on';
+  if (!terms) {
+    return {
+      status: 'error',
+      message: 'Vous devez accepter les CGU et la politique de confidentialité.',
+    };
+  }
+
   const name = clean(formData.get('name'));
   const address = clean(formData.get('address'));
   const city = clean(formData.get('city'));
