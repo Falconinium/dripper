@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import { Instrument_Serif, Inter } from 'next/font/google';
-import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 
 import { Footer } from '@/components/footer';
@@ -83,11 +82,6 @@ export default function RootLayout({
           <Toaster />
         </ThemeProvider>
         <Analytics />
-        <Script
-          src="https://cloud.umami.is/script.js"
-          data-website-id="03bdcb3e-d19a-487a-a815-06e9bc99d608"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
