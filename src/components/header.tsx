@@ -31,8 +31,8 @@ export async function Header() {
   const accountLabel = user ? 'Mon compte' : 'Connexion';
 
   return (
-    <header className="border-border/60 bg-background/80 sticky top-0 z-40 w-full border-b backdrop-blur-md">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
+    <header className="border-border/60 bg-background/80 sticky top-0 z-40 w-full border-b pt-[env(safe-area-inset-top)] backdrop-blur-md">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 pl-[max(1.5rem,env(safe-area-inset-left))] pr-[max(1.5rem,env(safe-area-inset-right))]">
         <Logo />
         <nav className="flex items-center gap-1">
           <ul className="hidden items-center gap-1 sm:flex">
