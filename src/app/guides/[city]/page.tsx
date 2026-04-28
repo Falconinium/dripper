@@ -43,7 +43,7 @@ export default async function CityGuide({ params }: { params: Promise<{ city: st
   return (
     <article className="mx-auto w-full max-w-3xl px-6 py-20 md:py-28">
       <p className="text-muted-foreground mb-6 text-xs tracking-[0.25em] uppercase">
-        Guide · {meta.city ?? city}
+        {meta.city ? `Guide · ${meta.city}` : 'Guide'}
       </p>
       <h1 className="font-serif text-5xl leading-[1.05] font-normal md:text-6xl">{meta.title}</h1>
       {meta.excerpt ? (
