@@ -1,5 +1,6 @@
 import Link from 'next/link';
 
+import { HeaderAccountMenu } from '@/components/header-account-menu';
 import { HeaderMobileMenu } from '@/components/header-mobile-menu';
 import { Logo } from '@/components/logo';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -15,6 +16,16 @@ export async function Header() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  let isAdmin = false;
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle();
+    isAdmin = profile?.role === 'admin';
+  }
 
   const accountHref = user ? '/mon-compte' : '/connexion';
   const accountLabel = user ? 'Mon compte' : 'Connexion';
@@ -46,12 +57,16 @@ export async function Header() {
               </li>
             ) : null}
             <li>
-              <Link
-                href={accountHref}
-                className="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm transition-colors"
-              >
-                {accountLabel}
-              </Link>
+              {user ? (
+                <HeaderAccountMenu isAdmin={isAdmin} />
+              ) : (
+                <Link
+                  href={accountHref}
+                  className="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm transition-colors"
+                >
+                  {accountLabel}
+                </Link>
+              )}
             </li>
           </ul>
           <ThemeToggle />
@@ -60,6 +75,8 @@ export async function Header() {
             accountHref={accountHref}
             accountLabel={accountLabel}
             showFavorites={!!user}
+            isLoggedIn={!!user}
+            isAdmin={isAdmin}
           />
         </nav>
       </div>
