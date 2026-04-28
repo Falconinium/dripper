@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { ConfirmDeleteButton } from '@/components/admin/confirm-delete-button';
 import { createClient } from '@/lib/supabase/server';
 
 import { deleteSuggestion } from './actions';
@@ -54,14 +54,12 @@ export default async function AdminSuggestionsPage() {
                   </div>
                   <form action={deleteSuggestion}>
                     <input type="hidden" name="id" value={s.id} />
-                    <Button
-                      type="submit"
-                      variant="outline"
+                    <ConfirmDeleteButton
+                      message={`Supprimer la proposition "${s.name}" ?`}
+                      variant="ghost"
                       size="sm"
-                      className="border-destructive/40 text-destructive hover:bg-destructive/5"
-                    >
-                      Supprimer
-                    </Button>
+                      className="border border-destructive/40 text-destructive hover:bg-destructive/5"
+                    />
                   </form>
                 </div>
 

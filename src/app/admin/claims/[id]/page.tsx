@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
-import { Button } from '@/components/ui/button';
+import { ConfirmActionButton } from '@/components/admin/confirm-delete-button';
 import { createClient } from '@/lib/supabase/server';
 
 import { approveClaim, rejectClaim } from '../actions';
@@ -143,9 +143,12 @@ export default async function AdminClaimDetailPage({
 
           <form action={approveClaim}>
             <input type="hidden" name="claim_id" value={claim.id} />
-            <Button type="submit" size="lg">
+            <ConfirmActionButton
+              message="Approuver cette revendication ? Le shop sera attribué à cet utilisateur."
+              size="lg"
+            >
               Approuver
-            </Button>
+            </ConfirmActionButton>
           </form>
 
           <div className="border-border border-t pt-6">
@@ -163,9 +166,12 @@ export default async function AdminClaimDetailPage({
                 rows={3}
                 className="border-input bg-background block w-full rounded-md border px-3 py-2 text-sm"
               />
-              <Button type="submit" variant="outline">
+              <ConfirmActionButton
+                message="Refuser cette revendication ?"
+                variant="outline"
+              >
                 Refuser
-              </Button>
+              </ConfirmActionButton>
             </form>
           </div>
         </section>
