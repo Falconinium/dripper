@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
+import { signOut } from '@/app/mon-compte/actions';
 import {
   Sheet,
   SheetContent,
@@ -18,11 +19,15 @@ export function HeaderMobileMenu({
   accountHref,
   accountLabel,
   showFavorites,
+  isLoggedIn,
+  isAdmin,
 }: {
   links: NavLink[];
   accountHref: string;
   accountLabel: string;
   showFavorites?: boolean;
+  isLoggedIn?: boolean;
+  isAdmin?: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -69,6 +74,25 @@ export function HeaderMobileMenu({
           >
             {accountLabel}
           </Link>
+          {isLoggedIn && isAdmin ? (
+            <Link
+              href="/admin"
+              onClick={() => setOpen(false)}
+              className="hover:bg-muted/40 rounded-md px-3 py-3 text-base transition-colors"
+            >
+              Admin
+            </Link>
+          ) : null}
+          {isLoggedIn ? (
+            <form action={signOut}>
+              <button
+                type="submit"
+                className="hover:bg-muted/40 w-full rounded-md px-3 py-3 text-left text-base transition-colors"
+              >
+                Se déconnecter
+              </button>
+            </form>
+          ) : null}
         </nav>
       </SheetContent>
     </Sheet>
