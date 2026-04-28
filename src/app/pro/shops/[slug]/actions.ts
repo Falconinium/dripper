@@ -77,6 +77,14 @@ export async function updateOwnedShop(
   const slug = trim(fd.get('slug'));
   if (!slug) return { status: 'error', message: 'Shop introuvable.' };
 
+  if (fd.get('photo_rights') !== 'on') {
+    return {
+      status: 'error',
+      message:
+        'Vous devez certifier détenir les droits sur les photos et accepter de les céder à Dripper.',
+    };
+  }
+
   const auth = await assertOwner(slug);
   if (!auth.ok) return { status: 'error', message: auth.message };
   const supabase = await createClient();

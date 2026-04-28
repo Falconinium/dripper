@@ -117,6 +117,20 @@ export function OwnerForm({ slug, initial }: { slug: string; initial: OwnerIniti
         </div>
       </fieldset>
 
+      <label className="text-muted-foreground flex items-start gap-3 text-xs leading-relaxed">
+        <input
+          type="checkbox"
+          name="photo_rights"
+          required
+          className="border-input mt-0.5 h-4 w-4 shrink-0 rounded"
+        />
+        <span>
+          Je certifie détenir les droits sur les photos ajoutées à cette fiche
+          et j’accepte d’en céder les droits d’image à Dripper pour leur
+          utilisation sur le site.
+        </span>
+      </label>
+
       {state.status === 'error' ? (
         <p className="text-destructive text-sm">{state.message}</p>
       ) : null}
