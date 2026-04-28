@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Instrument_Serif, Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
@@ -74,6 +75,7 @@ export default function RootLayout({
           <Footer />
           <Toaster />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
