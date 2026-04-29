@@ -216,6 +216,12 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
             </Section>
           ) : null}
 
+          {shop.labels?.length ? (
+            <Section title="Labels">
+              <Tags values={shop.labels} labels={{}} />
+            </Section>
+          ) : null}
+
           {roasters.length ? (
             <Section title="Torréfacteurs">
               <ul className="flex flex-wrap gap-2">

@@ -86,6 +86,7 @@ export default async function ProShopPage({
             espresso_machine: shop.espresso_machine,
             methods: shop.methods,
             options: shop.options,
+            labels: shop.labels,
           }}
         />
       </section>

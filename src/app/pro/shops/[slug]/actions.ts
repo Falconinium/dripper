@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 
+import { normalizeLabel } from '@/lib/shops/labels';
 import { createClient } from '@/lib/supabase/server';
 
 type ShopPhoto = { url: string; path: string; alt?: string };
@@ -98,6 +99,11 @@ export async function updateOwnedShop(
 
   const methods = filterKeys(fd.getAll('methods') as string[], METHOD_KEYS);
   const options = filterKeys(fd.getAll('options') as string[], OPTION_KEYS);
+  const labels = Array.from(
+    new Set(
+      (fd.getAll('labels') as string[]).map((v) => normalizeLabel(v)).filter(Boolean),
+    ),
+  );
 
   const { error } = await supabase
     .from('shops')
@@ -109,6 +115,7 @@ export async function updateOwnedShop(
       espresso_machine,
       methods,
       options,
+      labels,
     })
     .eq('id', auth.shopId);
 

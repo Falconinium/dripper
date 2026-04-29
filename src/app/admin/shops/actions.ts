@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 
 import { requireAdmin } from '@/lib/auth/require-admin';
 import { geocodeAddress } from '@/lib/mapbox/geocode';
+import { normalizeLabel } from '@/lib/shops/labels';
 import { createClient } from '@/lib/supabase/server';
 import { slugify } from '@/lib/utils/slug';
 
@@ -19,6 +20,11 @@ const OPTION_KEYS = ['decaf', 'oat_milk', 'soy_milk', 'beans_to_go', 'wifi', 'se
 function parseList(formData: FormData, key: string, allowed: readonly string[]) {
   const values = formData.getAll(key).map((v) => String(v));
   return values.filter((v) => allowed.includes(v));
+}
+
+function parseLabels(formData: FormData) {
+  const raw = formData.getAll('labels').map((v) => normalizeLabel(String(v))).filter(Boolean);
+  return Array.from(new Set(raw));
 }
 
 function nullable(value: FormDataEntryValue | null): string | null {
@@ -66,6 +72,7 @@ async function buildPayload(formData: FormData) {
       espresso_machine: nullable(formData.get('espresso_machine')),
       methods: parseList(formData, 'methods', METHOD_KEYS),
       options: parseList(formData, 'options', OPTION_KEYS),
+      labels: parseLabels(formData),
       is_selection: formData.get('is_selection') === 'on',
       status: nullable(formData.get('status')) ?? 'draft',
       location: `SRID=4326;POINT(${lng} ${lat})`,

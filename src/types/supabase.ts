@@ -589,6 +589,7 @@ export type Database = {
           id: string
           instagram: string | null
           is_selection: boolean
+          labels: string[]
           location: unknown
           methods: string[]
           name: string
@@ -616,6 +617,7 @@ export type Database = {
           id?: string
           instagram?: string | null
           is_selection?: boolean
+          labels?: string[]
           location?: unknown
           methods?: string[]
           name: string
@@ -643,6 +645,7 @@ export type Database = {
           id?: string
           instagram?: string | null
           is_selection?: boolean
+          labels?: string[]
           location?: unknown
           methods?: string[]
           name?: string

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { LabelsInput } from '@/components/labels-input';
 
 import { updateOwnedShop, type OwnerUpdateState } from './actions';
 
@@ -36,6 +37,7 @@ export type OwnerInitial = {
   espresso_machine?: string | null;
   methods?: string[] | null;
   options?: string[] | null;
+  labels?: string[] | null;
 };
 
 function SubmitButton() {
@@ -115,6 +117,11 @@ export function OwnerForm({ slug, initial }: { slug: string; initial: OwnerIniti
             />
           ))}
         </div>
+      </fieldset>
+
+      <fieldset className="space-y-3">
+        <legend className="text-sm font-medium">Labels</legend>
+        <LabelsInput name="labels" defaultValue={initial.labels ?? []} />
       </fieldset>
 
       <label className="text-muted-foreground flex items-start gap-3 text-xs leading-relaxed">
