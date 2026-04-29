@@ -81,7 +81,7 @@ export default async function HomePage() {
     <main className="flex flex-1 flex-col">
       <section className="mx-auto flex w-full max-w-5xl flex-col items-start justify-center gap-8 px-6 pt-20 pb-16 md:pt-28 md:pb-24">
         <p className="text-muted-foreground text-xs tracking-[0.25em] uppercase">
-          Le guide du café de spécialité · France
+          Cartographier les meilleurs coffee shops de France
         </p>
         <h1 className="font-serif text-5xl leading-[1.05] font-normal md:text-7xl">
           <span className="block">

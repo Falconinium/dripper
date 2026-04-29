@@ -53,7 +53,7 @@ export default function OpenGraphImage() {
               fontFamily: 'sans-serif',
             }}
           >
-            Le guide du café de spécialité · France
+            Cartographier les meilleurs coffee shops de France
           </p>
           <div
             style={{
