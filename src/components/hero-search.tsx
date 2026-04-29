@@ -181,6 +181,7 @@ export function HeroSearch({ cities, shops }: { cities: City[]; shops: Shop[] })
         <span className="bg-border h-4 w-px" aria-hidden />
         {METHODS.map((m) => {
           const active = methods.includes(m.key);
+          const mobileHidden = m.key !== 'espresso' && m.key !== 'v60';
           return (
             <button
               key={m.key}
@@ -188,6 +189,8 @@ export function HeroSearch({ cities, shops }: { cities: City[]; shops: Shop[] })
               aria-pressed={active}
               onClick={() => toggleMethod(m.key)}
               className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                mobileHidden ? 'hidden md:inline-flex' : ''
+              } ${
                 active
                   ? 'bg-foreground text-background border-foreground'
                   : 'border-border hover:bg-muted/40'
