@@ -1,17 +1,30 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 
 type Props = {
   items: string[];
   speed?: number;
+  mobileSpeed?: number;
   className?: string;
 };
 
-export function Marquee({ items, speed = 40, className }: Props) {
+export function Marquee({ items, speed = 40, mobileSpeed = 70, className }: Props) {
   const prefersReduced = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 767px)');
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener('change', update);
+    return () => mql.removeEventListener('change', update);
+  }, []);
+
   const loop = [...items, ...items];
-  const duration = Math.max(20, items.length * (60 / speed) * 4);
+  const effectiveSpeed = isMobile ? mobileSpeed : speed;
+  const duration = Math.max(20, items.length * (60 / effectiveSpeed) * 4);
 
   if (prefersReduced) {
     return (

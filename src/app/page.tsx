@@ -104,20 +104,54 @@ export default async function HomePage() {
         </div>
 
         {topCities.length ? (
-          <div className="flex flex-wrap items-center gap-2 pt-1">
-            <span className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
-              Populaires
-            </span>
-            {topCities.map((c) => (
+          <>
+            <div className="hidden flex-wrap items-center gap-2 pt-1 md:flex">
+              <span className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
+                Populaires
+              </span>
+              {topCities.map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/shops?city=${c.slug}`}
+                  className="border-border hover:bg-muted/40 rounded-full border px-3 py-1 text-xs transition-colors"
+                >
+                  {c.name}
+                </Link>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-2 pt-1 md:hidden">
+              <span className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
+                Populaires
+              </span>
+              {topCities.slice(0, 2).map((c) => (
+                <Link
+                  key={c.slug}
+                  href={`/shops?city=${c.slug}`}
+                  className="border-border hover:bg-muted/40 rounded-full border px-3 py-1 text-xs transition-colors"
+                >
+                  {c.name}
+                </Link>
+              ))}
               <Link
-                key={c.slug}
-                href={`/shops?city=${c.slug}`}
+                href="/shops?selection=1"
                 className="border-border hover:bg-muted/40 rounded-full border px-3 py-1 text-xs transition-colors"
               >
-                {c.name}
+                Sélection Dripper
               </Link>
-            ))}
-          </div>
+              <Link
+                href="/shops?method=espresso"
+                className="border-border hover:bg-muted/40 rounded-full border px-3 py-1 text-xs transition-colors"
+              >
+                Espresso
+              </Link>
+              <Link
+                href="/shops?method=v60"
+                className="border-border hover:bg-muted/40 rounded-full border px-3 py-1 text-xs transition-colors"
+              >
+                V60
+              </Link>
+            </div>
+          </>
         ) : null}
 
         <div className="flex flex-wrap items-center gap-3 pt-4">
