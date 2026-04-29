@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const alt =
-  'Dripper — le guide des cafés de spécialité';
+  'Dripper — les meilleurs coffee shops de France';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
