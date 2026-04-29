@@ -10,7 +10,7 @@ type Props = {
   className?: string;
 };
 
-export function Marquee({ items, speed = 40, mobileSpeed = 110, className }: Props) {
+export function Marquee({ items, speed = 40, mobileSpeed = 200, className }: Props) {
   const prefersReduced = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
 
@@ -24,7 +24,7 @@ export function Marquee({ items, speed = 40, mobileSpeed = 110, className }: Pro
 
   const loop = [...items, ...items];
   const effectiveSpeed = isMobile ? mobileSpeed : speed;
-  const duration = Math.max(20, items.length * (60 / effectiveSpeed) * 4);
+  const duration = Math.max(10, items.length * (60 / effectiveSpeed) * 4);
 
   if (prefersReduced) {
     return (
