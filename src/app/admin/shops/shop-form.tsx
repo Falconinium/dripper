@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { LabelsInput } from '@/components/labels-input';
 
 import type { ShopFormState } from './actions';
 import { AddressAutocomplete } from './address-autocomplete';
@@ -42,6 +43,7 @@ export type ShopInitialValues = {
   espresso_machine?: string | null;
   methods?: string[] | null;
   options?: string[] | null;
+  labels?: string[] | null;
   is_selection?: boolean | null;
   status?: string | null;
   coords?: { lng: number; lat: number } | null;
@@ -143,6 +145,11 @@ export function ShopForm({
             />
           ))}
         </div>
+      </fieldset>
+
+      <fieldset className="space-y-2">
+        <legend className="text-sm font-medium">Labels</legend>
+        <LabelsInput name="labels" defaultValue={initial?.labels ?? []} />
       </fieldset>
 
       <div className="flex flex-wrap items-center gap-6">

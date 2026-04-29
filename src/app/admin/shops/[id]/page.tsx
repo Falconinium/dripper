@@ -106,6 +106,7 @@ export default async function EditShopPage({ params }: { params: Promise<{ id: s
             espresso_machine: shop.espresso_machine,
             methods: shop.methods,
             options: shop.options,
+            labels: shop.labels,
             is_selection: shop.is_selection,
             status: shop.status,
             coords,
