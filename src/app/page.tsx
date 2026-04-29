@@ -12,6 +12,15 @@ import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
+function pickRandom<T>(items: T[], take: number): T[] {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, take);
+}
+
 const pillars = [
   {
     title: 'Curation éditoriale',
@@ -35,9 +44,7 @@ export default async function HomePage() {
       .from('shops')
       .select('id, slug, name, city, description, is_selection, photos')
       .eq('status', 'published')
-      .eq('is_selection', true)
-      .order('name')
-      .limit(6),
+      .eq('is_selection', true),
     supabase
       .from('shops')
       .select('slug, name, city')
@@ -49,7 +56,8 @@ export default async function HomePage() {
 
   const allShops = allShopsRes.data ?? [];
 
-  const featured = shopsRes.data ?? [];
+  const featuredPool = shopsRes.data ?? [];
+  const featured = pickRandom(featuredPool, 3);
   const latestGuides = guides.slice(0, 3);
   const topCities = cities.slice(0, 5);
 
