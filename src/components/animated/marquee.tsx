@@ -56,7 +56,7 @@ export function Marquee({ items, speed = 40, mobileSpeed = 200, className }: Pro
     >
       <motion.div
         key={duration}
-        className="flex gap-10 whitespace-nowrap"
+        className="flex whitespace-nowrap"
         animate={{ x: ['0%', '-50%'] }}
         transition={{ duration, ease: 'linear', repeat: Infinity }}
       >
@@ -66,7 +66,7 @@ export function Marquee({ items, speed = 40, mobileSpeed = 200, className }: Pro
             className="text-muted-foreground font-serif text-2xl whitespace-nowrap md:text-3xl"
           >
             {it}
-            <span aria-hidden className="text-muted-foreground/40 ml-10">
+            <span aria-hidden className="text-muted-foreground/40 mx-10">
               ·
             </span>
           </span>
