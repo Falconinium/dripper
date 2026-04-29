@@ -10,7 +10,7 @@ type Props = {
   className?: string;
 };
 
-export function Marquee({ items, speed = 40, mobileSpeed = 70, className }: Props) {
+export function Marquee({ items, speed = 40, mobileSpeed = 110, className }: Props) {
   const prefersReduced = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
 
@@ -55,6 +55,7 @@ export function Marquee({ items, speed = 40, mobileSpeed = 70, className }: Prop
       }}
     >
       <motion.div
+        key={duration}
         className="flex gap-10 whitespace-nowrap"
         animate={{ x: ['0%', '-50%'] }}
         transition={{ duration, ease: 'linear', repeat: Infinity }}
