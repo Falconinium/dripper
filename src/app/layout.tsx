@@ -28,11 +28,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'Dripper — le guide des cafés de spécialité',
+    default: 'Dripper — les meilleurs coffee shops de France',
     template: '%s · Dripper',
   },
   description:
-    'Le guide éditorial et communautaire des coffee shops français qui prennent le café au sérieux.',
+    'Découvre les meilleurs coffee shops de France. Notes communautaires, sélection éditoriale, carte interactive.',
   openGraph: {
     type: 'website',
     siteName: 'Dripper',
@@ -40,9 +40,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Dripper — le guide des cafés de spécialité',
+    title: 'Dripper — les meilleurs coffee shops de France',
     description:
-      'Le guide éditorial et communautaire des coffee shops français qui prennent le café au sérieux.',
+      'Découvre les meilleurs coffee shops de France. Notes communautaires, sélection éditoriale, carte interactive.',
   },
   applicationName: 'Dripper',
   appleWebApp: {
