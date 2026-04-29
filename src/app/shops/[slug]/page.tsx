@@ -71,7 +71,7 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [scoresRes, reviewsRes, myReviewRes, favRes, profileRes, roastersRes] = await Promise.all([
+  const [scoresRes, reviewsRes, myReviewRes, favRes, profileRes] = await Promise.all([
     supabase
       .from('shop_scores')
       .select('avg_experience_score, review_count')
@@ -102,10 +102,6 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
     user
       ? supabase.from('profiles').select('role').eq('id', user.id).maybeSingle()
       : Promise.resolve({ data: null }),
-    supabase
-      .from('shop_roasters')
-      .select('is_primary, roasters:roasters!inner(slug, name, city)')
-      .eq('shop_id', shop.id),
   ]);
 
   const scores = scoresRes.data;
@@ -113,10 +109,6 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
   const myReview = myReviewRes.data;
   const isFavorite = !!favRes.data;
   const isAdmin = profileRes.data?.role === 'admin';
-  const roasters =
-    roastersRes.data
-      ?.filter((l) => l.roasters)
-      .sort((a, b) => Number(b.is_primary) - Number(a.is_primary)) ?? [];
 
   const photos: Photo[] = Array.isArray(shop.photos)
     ? (shop.photos as Photo[]).filter((p) => p && typeof p.url === 'string')
@@ -222,27 +214,6 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
             </Section>
           ) : null}
 
-          {roasters.length ? (
-            <Section title="Torréfacteurs">
-              <ul className="flex flex-wrap gap-2">
-                {roasters.map((r) => (
-                  <li key={r.roasters!.slug}>
-                    <Link
-                      href={`/torrefacteurs/${r.roasters!.slug}`}
-                      className="border-border hover:bg-muted/40 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs transition-colors"
-                    >
-                      {r.roasters!.name}
-                      {r.is_primary ? (
-                        <span className="text-muted-foreground text-[10px] tracking-wider uppercase">
-                          Principal
-                        </span>
-                      ) : null}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </Section>
-          ) : null}
 
           <section>
             <h2 className="font-serif text-2xl mb-4">

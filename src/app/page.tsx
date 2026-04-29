@@ -253,22 +253,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 py-24 md:py-32">
-        <p className="text-muted-foreground text-xs tracking-[0.25em] uppercase">
-          Découvrir
-        </p>
-        <h2 className="font-serif text-4xl leading-tight font-normal md:text-5xl">
-          L’annuaire des{' '}
-          <Link href="/torrefacteurs" className="italic underline underline-offset-[6px]">
-            torréfacteurs
-          </Link>
-          .
-        </h2>
-        <p className="text-muted-foreground max-w-2xl text-lg leading-relaxed">
-          Sans eux, pas de tasse. On recense les artisans qui sourcent, cuisent et livrent
-          les grains travaillés dans les shops qu’on recommande.
-        </p>
-      </section>
     </main>
   );
 }
