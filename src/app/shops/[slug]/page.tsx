@@ -189,216 +189,246 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
         <PhotoCarousel photos={photos} name={shop.name} priority />
       ) : null}
 
-      <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-3">
-        <div className="md:col-span-2 space-y-10">
-          <Scores
-            exp={scores?.avg_experience_score}
-            count={scores?.review_count ?? 0}
+      {(() => {
+        const overviewBlock = (
+          <div className="space-y-10">
+            <Scores
+              exp={scores?.avg_experience_score}
+              count={scores?.review_count ?? 0}
+            />
+
+            {shop.methods?.length ? (
+              <Section title="Méthodes">
+                <Tags values={shop.methods} labels={METHOD_LABELS} />
+              </Section>
+            ) : null}
+
+            {shop.options?.length ? (
+              <Section title="Options">
+                <Tags values={shop.options} labels={OPTION_LABELS} />
+              </Section>
+            ) : null}
+
+            {shop.labels?.length ? (
+              <Section title="Labels">
+                <Tags values={shop.labels} labels={{}} />
+              </Section>
+            ) : null}
+          </div>
+        );
+
+        const mapBlock = coordsRow?.lng && coordsRow?.lat ? (
+          <ShopMap
+            lng={coordsRow.lng}
+            lat={coordsRow.lat}
+            token={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ''}
+            name={shop.name}
           />
+        ) : null;
 
-          {shop.methods?.length ? (
-            <Section title="Méthodes">
-              <Tags values={shop.methods} labels={METHOD_LABELS} />
-            </Section>
-          ) : null}
-
-          {shop.options?.length ? (
-            <Section title="Options">
-              <Tags values={shop.options} labels={OPTION_LABELS} />
-            </Section>
-          ) : null}
-
-          {shop.labels?.length ? (
-            <Section title="Labels">
-              <Tags values={shop.labels} labels={{}} />
-            </Section>
-          ) : null}
-
-
-          <section>
-            <h2 className="font-serif text-2xl mb-4">
-              {myReview ? 'Votre avis' : 'Laisser un avis'}
-            </h2>
-            {!user ? (
-              <p className="text-muted-foreground text-sm">
-                <Link
-                  href={`/connexion?next=/shops/${slug}`}
-                  className="underline underline-offset-4"
-                >
-                  Connectez-vous
-                </Link>{' '}
-                pour noter ce shop.
-              </p>
-            ) : (
-              <>
-                <ReviewForm
-                  shopId={shop.id}
-                  slug={slug}
-                  existing={
-                    myReview
-                      ? {
-                          experience_score: myReview.experience_score,
-                          comment: myReview.comment,
-                          drink_ordered: myReview.drink_ordered,
-                        }
-                      : null
-                  }
-                />
-                {myReview ? (
-                  <form action={deleteMine} className="mt-3">
-                    <button
-                      type="submit"
-                      className="text-destructive hover:underline text-xs"
-                    >
-                      Supprimer mon avis
-                    </button>
-                  </form>
-                ) : null}
-              </>
-            )}
-          </section>
-
-          <section>
-            <h2 className="font-serif text-2xl mb-4">
-              Avis ({scores?.review_count ?? 0})
-            </h2>
-            {!reviews.length ? (
-              <p className="text-muted-foreground text-sm">Aucun avis pour le moment.</p>
-            ) : (
-              <ul className="space-y-6">
-                {reviews.map((r) => {
-                  const adminDelete = async () => {
-                    'use server';
-                    if (r.id) await adminDeleteReview(r.id, slug);
-                  };
-                  const name = r.author_display_name ?? r.author_username ?? 'Anonyme';
-                  return (
-                    <li key={r.id} className="border-border border-b pb-6 last:border-0">
-                      <div className="flex items-baseline justify-between gap-4">
-                        <div>
-                          <p className="text-sm font-medium">{name}</p>
-                          <p className="text-muted-foreground text-xs">
-                            {r.created_at
-                              ? new Date(r.created_at).toLocaleDateString('fr-FR', {
-                                  day: 'numeric',
-                                  month: 'long',
-                                  year: 'numeric',
-                                })
-                              : ''}
-                          </p>
-                        </div>
-                        <div className="text-muted-foreground text-xs tabular-nums">
-                          {r.experience_score}/10
-                        </div>
-                      </div>
-                      {r.drink_ordered ? (
-                        <p className="text-muted-foreground mt-2 text-xs italic">
-                          Commandé : {r.drink_ordered}
-                        </p>
-                      ) : null}
-                      {r.comment ? (
-                        <p className="mt-3 leading-relaxed">{r.comment}</p>
-                      ) : null}
-                      {isAdmin ? (
-                        <form action={adminDelete} className="mt-3">
-                          <button
-                            type="submit"
-                            className="text-destructive text-xs hover:underline"
-                          >
-                            Supprimer (admin)
-                          </button>
-                        </form>
-                      ) : null}
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </section>
-        </div>
-
-        <aside className="space-y-6 text-sm">
-          {coordsRow?.lng && coordsRow?.lat ? (
-            <ShopMap
-              lng={coordsRow.lng}
-              lat={coordsRow.lat}
-              token={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ''}
-              name={shop.name}
-            />
-          ) : null}
-          {shop.address ? (
-            <InfoRow
-              label="Adresse"
-              value={
-                <Link
-                  href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-                    [shop.address, shop.postal_code, shop.city].filter(Boolean).join(', '),
-                  )}`}
-                  target="_blank"
-                  rel="noopener"
-                  className="underline underline-offset-4"
-                >
-                  {shop.address}
-                  <span className="text-muted-foreground ml-1 text-xs">↗ Itinéraire</span>
-                </Link>
-              }
-            />
-          ) : null}
-          {shop.postal_code || shop.city ? (
-            <InfoRow
-              label="Ville"
-              value={[shop.postal_code, shop.city].filter(Boolean).join(' ')}
-            />
-          ) : null}
-          <InfoRow label="Téléphone" value={shop.phone} />
-          {shop.website ? (
-            <InfoRow
-              label="Site"
-              value={
-                <Link href={shop.website} className="underline underline-offset-4">
-                  {shop.website.replace(/^https?:\/\//, '')}
-                </Link>
-              }
-            />
-          ) : null}
-          {shop.instagram && instagramHandle(shop.instagram) ? (
-            <InfoRow
-              label="Instagram"
-              value={
-                <Link
-                  href={instagramUrl(shop.instagram)!}
-                  target="_blank"
-                  rel="noopener"
-                  className="underline underline-offset-4"
-                >
-                  @{instagramHandle(shop.instagram)}
-                </Link>
-              }
-            />
-          ) : null}
-          <InfoRow label="Machine espresso" value={shop.espresso_machine} />
-          {!shop.claimed_by ? (
-            <div className="border-border mt-4 rounded-2xl border p-5">
-              <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
-                Propriétaire ?
-              </p>
-              <p className="mt-2 text-sm leading-relaxed">
-                Revendiquez ce shop pour gérer ses informations sur Dripper.
-              </p>
-              <Link
-                href={
-                  user
-                    ? `/shops/${slug}/revendiquer`
-                    : `/connexion?next=/shops/${slug}/revendiquer`
+        const infoBlock = (
+          <div className="space-y-6 text-sm">
+            {shop.address ? (
+              <InfoRow
+                label="Adresse"
+                value={
+                  <Link
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                      [shop.address, shop.postal_code, shop.city].filter(Boolean).join(', '),
+                    )}`}
+                    target="_blank"
+                    rel="noopener"
+                    className="underline underline-offset-4"
+                  >
+                    {shop.address}
+                    <span className="text-muted-foreground ml-1 text-xs">↗ Itinéraire</span>
+                  </Link>
                 }
-                className="border-border hover:bg-muted/40 mt-3 inline-flex items-center rounded-full border px-4 py-2 text-xs transition-colors"
-              >
-                Revendiquer ce shop →
-              </Link>
+              />
+            ) : null}
+            {shop.postal_code || shop.city ? (
+              <InfoRow
+                label="Ville"
+                value={[shop.postal_code, shop.city].filter(Boolean).join(' ')}
+              />
+            ) : null}
+            <InfoRow label="Téléphone" value={shop.phone} />
+            {shop.website ? (
+              <InfoRow
+                label="Site"
+                value={
+                  <Link href={shop.website} className="underline underline-offset-4">
+                    {shop.website.replace(/^https?:\/\//, '')}
+                  </Link>
+                }
+              />
+            ) : null}
+            {shop.instagram && instagramHandle(shop.instagram) ? (
+              <InfoRow
+                label="Instagram"
+                value={
+                  <Link
+                    href={instagramUrl(shop.instagram)!}
+                    target="_blank"
+                    rel="noopener"
+                    className="underline underline-offset-4"
+                  >
+                    @{instagramHandle(shop.instagram)}
+                  </Link>
+                }
+              />
+            ) : null}
+            <InfoRow label="Machine espresso" value={shop.espresso_machine} />
+            {!shop.claimed_by ? (
+              <div className="border-border mt-4 rounded-2xl border p-5">
+                <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
+                  Propriétaire ?
+                </p>
+                <p className="mt-2 text-sm leading-relaxed">
+                  Revendiquez ce shop pour gérer ses informations sur Dripper.
+                </p>
+                <Link
+                  href={
+                    user
+                      ? `/shops/${slug}/revendiquer`
+                      : `/connexion?next=/shops/${slug}/revendiquer`
+                  }
+                  className="border-border hover:bg-muted/40 mt-3 inline-flex items-center rounded-full border px-4 py-2 text-xs transition-colors"
+                >
+                  Revendiquer ce shop →
+                </Link>
+              </div>
+            ) : null}
+          </div>
+        );
+
+        const reviewsBlock = (
+          <div className="space-y-10">
+            <section>
+              <h2 className="font-serif text-2xl mb-4">
+                {myReview ? 'Votre avis' : 'Laisser un avis'}
+              </h2>
+              {!user ? (
+                <p className="text-muted-foreground text-sm">
+                  <Link
+                    href={`/connexion?next=/shops/${slug}`}
+                    className="underline underline-offset-4"
+                  >
+                    Connectez-vous
+                  </Link>{' '}
+                  pour noter ce shop.
+                </p>
+              ) : (
+                <>
+                  <ReviewForm
+                    shopId={shop.id}
+                    slug={slug}
+                    existing={
+                      myReview
+                        ? {
+                            experience_score: myReview.experience_score,
+                            comment: myReview.comment,
+                            drink_ordered: myReview.drink_ordered,
+                          }
+                        : null
+                    }
+                  />
+                  {myReview ? (
+                    <form action={deleteMine} className="mt-3">
+                      <button
+                        type="submit"
+                        className="text-destructive hover:underline text-xs"
+                      >
+                        Supprimer mon avis
+                      </button>
+                    </form>
+                  ) : null}
+                </>
+              )}
+            </section>
+
+            <section>
+              <h2 className="font-serif text-2xl mb-4">
+                Avis ({scores?.review_count ?? 0})
+              </h2>
+              {!reviews.length ? (
+                <p className="text-muted-foreground text-sm">Aucun avis pour le moment.</p>
+              ) : (
+                <ul className="space-y-6">
+                  {reviews.map((r) => {
+                    const adminDelete = async () => {
+                      'use server';
+                      if (r.id) await adminDeleteReview(r.id, slug);
+                    };
+                    const name = r.author_display_name ?? r.author_username ?? 'Anonyme';
+                    return (
+                      <li key={r.id} className="border-border border-b pb-6 last:border-0">
+                        <div className="flex items-baseline justify-between gap-4">
+                          <div>
+                            <p className="text-sm font-medium">{name}</p>
+                            <p className="text-muted-foreground text-xs">
+                              {r.created_at
+                                ? new Date(r.created_at).toLocaleDateString('fr-FR', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                  })
+                                : ''}
+                            </p>
+                          </div>
+                          <div className="text-muted-foreground text-xs tabular-nums">
+                            {r.experience_score}/10
+                          </div>
+                        </div>
+                        {r.drink_ordered ? (
+                          <p className="text-muted-foreground mt-2 text-xs italic">
+                            Commandé : {r.drink_ordered}
+                          </p>
+                        ) : null}
+                        {r.comment ? (
+                          <p className="mt-3 leading-relaxed">{r.comment}</p>
+                        ) : null}
+                        {isAdmin ? (
+                          <form action={adminDelete} className="mt-3">
+                            <button
+                              type="submit"
+                              className="text-destructive text-xs hover:underline"
+                            >
+                              Supprimer (admin)
+                            </button>
+                          </form>
+                        ) : null}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </section>
+          </div>
+        );
+
+        return (
+          <>
+            <div className="mt-12 flex flex-col gap-12 md:hidden">
+              {overviewBlock}
+              {infoBlock}
+              {mapBlock}
+              {reviewsBlock}
             </div>
-          ) : null}
-        </aside>
-      </div>
+
+            <div className="mt-12 hidden gap-12 md:grid md:grid-cols-3">
+              <div className="md:col-span-2 space-y-10">
+                {overviewBlock}
+                {reviewsBlock}
+              </div>
+              <aside className="space-y-6 text-sm">
+                {mapBlock}
+                {infoBlock}
+              </aside>
+            </div>
+          </>
+        );
+      })()}
     </main>
   );
 }
