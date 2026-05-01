@@ -17,6 +17,12 @@ export function FavoriteButton({
 }) {
   const [isPending, startTransition] = useTransition();
 
+  const label = !authed
+    ? 'Se connecter pour enregistrer'
+    : isFavorite
+      ? 'Retirer des favoris'
+      : 'Enregistrer dans les favoris';
+
   return (
     <button
       type="button"
@@ -27,6 +33,7 @@ export function FavoriteButton({
       }
       disabled={isPending}
       aria-pressed={isFavorite}
+      aria-label={label}
       className="border-border hover:bg-muted/40 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors disabled:opacity-60"
     >
       <CoffeeCupIcon filled={isFavorite} />

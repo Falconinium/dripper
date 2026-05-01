@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -10,12 +9,7 @@ import { instagramHandle, instagramUrl } from '@/lib/utils/instagram';
 import { adminDeleteReview, deleteMyReview } from './actions';
 import { FavoriteButton } from './favorite-button';
 import { ReviewForm } from './review-form';
-
-const ShopMap = dynamic(() => import('./shop-map').then((m) => m.ShopMap), {
-  loading: () => (
-    <div className="border-border bg-muted/30 aspect-[4/3] w-full animate-pulse rounded-md border" />
-  ),
-});
+import { ShopMapClient } from './shop-map-client';
 
 type Photo = { url: string; alt?: string };
 
@@ -226,7 +220,7 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
         );
 
         const mapBlock = coordsRow?.lng && coordsRow?.lat ? (
-          <ShopMap
+          <ShopMapClient
             lng={coordsRow.lng}
             lat={coordsRow.lat}
             token={process.env.NEXT_PUBLIC_MAPBOX_TOKEN ?? ''}
@@ -236,57 +230,59 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
 
         const infoBlock = (
           <div className="space-y-6 text-sm">
-            {shop.address ? (
-              <InfoRow
-                label="Adresse"
-                value={
-                  <Link
-                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-                      [shop.address, shop.postal_code, shop.city].filter(Boolean).join(', '),
-                    )}`}
-                    target="_blank"
-                    rel="noopener"
-                    className="underline underline-offset-4"
-                  >
-                    {shop.address}
-                    <span className="text-muted-foreground ml-1 text-xs">↗ Itinéraire</span>
-                  </Link>
-                }
-              />
-            ) : null}
-            {shop.postal_code || shop.city ? (
-              <InfoRow
-                label="Ville"
-                value={[shop.postal_code, shop.city].filter(Boolean).join(' ')}
-              />
-            ) : null}
-            <InfoRow label="Téléphone" value={shop.phone} />
-            {shop.website ? (
-              <InfoRow
-                label="Site"
-                value={
-                  <Link href={shop.website} className="underline underline-offset-4">
-                    {shop.website.replace(/^https?:\/\//, '')}
-                  </Link>
-                }
-              />
-            ) : null}
-            {shop.instagram && instagramHandle(shop.instagram) ? (
-              <InfoRow
-                label="Instagram"
-                value={
-                  <Link
-                    href={instagramUrl(shop.instagram)!}
-                    target="_blank"
-                    rel="noopener"
-                    className="underline underline-offset-4"
-                  >
-                    @{instagramHandle(shop.instagram)}
-                  </Link>
-                }
-              />
-            ) : null}
-            <InfoRow label="Machine espresso" value={shop.espresso_machine} />
+            <dl className="space-y-6">
+              {shop.address ? (
+                <InfoRow
+                  label="Adresse"
+                  value={
+                    <Link
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                        [shop.address, shop.postal_code, shop.city].filter(Boolean).join(', '),
+                      )}`}
+                      target="_blank"
+                      rel="noopener"
+                      className="underline underline-offset-4"
+                    >
+                      {shop.address}
+                      <span className="text-muted-foreground ml-1 text-xs">↗ Itinéraire</span>
+                    </Link>
+                  }
+                />
+              ) : null}
+              {shop.postal_code || shop.city ? (
+                <InfoRow
+                  label="Ville"
+                  value={[shop.postal_code, shop.city].filter(Boolean).join(' ')}
+                />
+              ) : null}
+              <InfoRow label="Téléphone" value={shop.phone} />
+              {shop.website ? (
+                <InfoRow
+                  label="Site"
+                  value={
+                    <Link href={shop.website} className="underline underline-offset-4">
+                      {shop.website.replace(/^https?:\/\//, '')}
+                    </Link>
+                  }
+                />
+              ) : null}
+              {shop.instagram && instagramHandle(shop.instagram) ? (
+                <InfoRow
+                  label="Instagram"
+                  value={
+                    <Link
+                      href={instagramUrl(shop.instagram)!}
+                      target="_blank"
+                      rel="noopener"
+                      className="underline underline-offset-4"
+                    >
+                      @{instagramHandle(shop.instagram)}
+                    </Link>
+                  }
+                />
+              ) : null}
+              <InfoRow label="Machine espresso" value={shop.espresso_machine} />
+            </dl>
             {!shop.claimed_by ? (
               <div className="border-border mt-4 rounded-2xl border p-5">
                 <p className="text-muted-foreground text-xs tracking-[0.2em] uppercase">
@@ -494,9 +490,9 @@ function ScoreCard({ label, value }: { label: string; value: number | null | und
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   if (value === null || value === undefined || value === '') return null;
   return (
-    <div className="border-border flex flex-col gap-1 border-b pb-4">
+    <div className="border-border border-b pb-4">
       <dt className="text-muted-foreground text-xs tracking-[0.2em] uppercase">{label}</dt>
-      <dd>{value}</dd>
+      <dd className="mt-1">{value}</dd>
     </div>
   );
 }

@@ -2,6 +2,14 @@
   "name": "dripper",
   "version": "0.1.0",
   "private": true,
+  "browserslist": [
+    "Chrome >= 110",
+    "Edge >= 110",
+    "Firefox >= 110",
+    "Safari >= 16",
+    "iOS >= 16",
+    "not dead"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
