@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
@@ -9,7 +10,12 @@ import { instagramHandle, instagramUrl } from '@/lib/utils/instagram';
 import { adminDeleteReview, deleteMyReview } from './actions';
 import { FavoriteButton } from './favorite-button';
 import { ReviewForm } from './review-form';
-import { ShopMap } from './shop-map';
+
+const ShopMap = dynamic(() => import('./shop-map').then((m) => m.ShopMap), {
+  loading: () => (
+    <div className="border-border bg-muted/30 aspect-[4/3] w-full animate-pulse rounded-md border" />
+  ),
+});
 
 type Photo = { url: string; alt?: string };
 
@@ -52,24 +58,26 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const supabase = await createClient();
 
-  const { data: shop } = await supabase
-    .from('shops')
-    .select('*')
-    .eq('slug', slug)
-    .eq('status', 'published')
-    .maybeSingle();
+  const [shopRes, coordsRes, userRes] = await Promise.all([
+    supabase
+      .from('shops')
+      .select('*')
+      .eq('slug', slug)
+      .eq('status', 'published')
+      .maybeSingle(),
+    supabase
+      .from('shops_public')
+      .select('lng, lat')
+      .eq('slug', slug)
+      .maybeSingle(),
+    supabase.auth.getUser(),
+  ]);
 
+  const shop = shopRes.data;
   if (!shop) notFound();
 
-  const { data: coordsRow } = await supabase
-    .from('shops_public')
-    .select('lng, lat')
-    .eq('id', shop.id)
-    .maybeSingle();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const coordsRow = coordsRes.data;
+  const user = userRes.data.user;
 
   const [scoresRes, reviewsRes, myReviewRes, favRes, profileRes] = await Promise.all([
     supabase
