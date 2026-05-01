@@ -7,6 +7,16 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.join(__dirname),
   },
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'fxkeyiitycqfxlowevgz.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
+  },
   async redirects() {
     return [
       { source: '/selection/criteres', destination: '/selection', permanent: true },

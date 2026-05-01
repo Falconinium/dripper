@@ -44,7 +44,6 @@ export function ShopCard({
             priority={priority}
             fetchPriority={priority ? 'high' : 'auto'}
             loading={priority ? 'eager' : 'lazy'}
-            unoptimized
           />
         ) : (
           <div className="text-muted-foreground flex h-full items-center justify-center font-serif text-6xl italic">

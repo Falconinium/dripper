@@ -95,7 +95,6 @@ export function PhotoCarousel({
               sizes="(min-width: 1024px) 64rem, 100vw"
               priority={i === 0 ? Boolean(priority) : false}
               loading={priority && i === 0 ? 'eager' : 'lazy'}
-              unoptimized
             />
             <Image
               src={p.url}
@@ -106,7 +105,6 @@ export function PhotoCarousel({
               priority={i === 0 ? Boolean(priority) : false}
               fetchPriority={priority && i === 0 ? 'high' : 'auto'}
               loading={priority && i === 0 ? 'eager' : 'lazy'}
-              unoptimized
             />
           </div>
         ))}
