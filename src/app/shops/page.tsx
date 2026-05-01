@@ -133,7 +133,7 @@ export default async function ShopsListPage({
       </p>
       <div className="flex flex-wrap items-end justify-between gap-6">
         <h1 className="font-serif text-5xl leading-[1.05] md:text-6xl">
-          À <em className="italic">{title}.</em>
+          {cityEntry ? <>À <em className="italic">{title}.</em></> : <em className="italic">{title}.</em>}
         </h1>
         <Link
           href={cityEntry ? `/carte?city=${cityEntry.slug}` : '/carte'}
