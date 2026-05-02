@@ -86,6 +86,9 @@ export function ClaimForm({
         name="phone"
         type="tel"
         autoComplete="tel"
+        inputMode="tel"
+        pattern="^(?:\+33|0)[\s.\-]?[1-9](?:[\s.\-]?\d{2}){4}$"
+        placeholder="06 12 34 56 78"
         required
       />
 

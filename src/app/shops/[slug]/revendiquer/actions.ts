@@ -70,6 +70,14 @@ export async function submitClaim(
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(pro_email)) {
     return { status: 'error', message: 'Email invalide.' };
   }
+  const phoneNormalized = phone.replace(/[\s.\-()]/g, '');
+  if (!/^(?:\+33|0)[1-9]\d{8}$/.test(phoneNormalized)) {
+    return {
+      status: 'error',
+      message:
+        'Téléphone invalide. Format attendu : 06 12 34 56 78 ou +33 6 12 34 56 78.',
+    };
+  }
 
   const siteDomain = extractDomainFromUrl(shop.website);
   const emailMatchesSite = siteDomain
@@ -91,7 +99,7 @@ export async function submitClaim(
       siret,
       role_in_company,
       pro_email,
-      phone,
+      phone: phoneNormalized,
       domain_verification_email: needsDomainVerif ? pro_email : null,
       domain_verification_code: code,
       domain_skipped: !needsDomainVerif,
