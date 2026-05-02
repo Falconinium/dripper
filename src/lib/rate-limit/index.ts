@@ -19,7 +19,7 @@ function build(prefix: string, limit: number, window: `${number} ${'s' | 'm' | '
 
 export const rateLimiters = {
   review: build('review', 5, '10 m'),
-  favorite: build('favorite', 30, '1 m'),
+  favorite: build('favorite', 30, '5 m'),
   suggestion: build('suggestion', 3, '1 h'),
   claim: build('claim', 5, '1 h'),
   auth: build('auth', 10, '10 m'),
