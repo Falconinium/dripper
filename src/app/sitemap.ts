@@ -7,6 +7,8 @@ import { createClient } from '@/lib/supabase/server';
 const BASE =
   process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ?? 'http://localhost:3000';
 
+export const revalidate = 86400;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = await createClient();
   const { data: shops } = await supabase

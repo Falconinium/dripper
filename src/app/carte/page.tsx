@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
+import { listCities } from '@/lib/cities';
 import { createClient } from '@/lib/supabase/server';
 
 import { MapView, type ShopPin } from './map-view';
@@ -12,12 +14,26 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
-export default async function CartePage() {
+type SearchParams = { city?: string };
+
+export default async function CartePage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const { city: citySlug } = await searchParams;
   const supabase = await createClient();
-  const { data: shops } = await supabase
+
+  const cities = await listCities();
+  const cityEntry = citySlug ? cities.find((c) => c.slug === citySlug) : null;
+  if (citySlug && !cityEntry) notFound();
+
+  let query = supabase
     .from('shops_public')
     .select('id, slug, name, city, is_selection, lng, lat')
     .eq('status', 'published');
+  if (cityEntry) query = query.ilike('city', cityEntry.name);
+  const { data: shops } = await query;
 
   const pins: ShopPin[] = (shops ?? [])
     .map((s) => {
@@ -41,7 +57,8 @@ export default async function CartePage() {
       <div className="border-border border-b px-6 py-6">
         <p className="text-muted-foreground text-xs tracking-[0.25em] uppercase">Carte</p>
         <h1 className="font-serif text-3xl md:text-4xl">
-          Les cafés de spécialité, <em className="italic">en France.</em>
+          Les cafés de spécialité,{' '}
+          <em className="italic">{cityEntry ? `à ${cityEntry.name}.` : 'en France.'}</em>
         </h1>
         <p className="text-muted-foreground mt-2 text-sm">
           {pins.length} {pins.length > 1 ? 'adresses référencées' : 'adresse référencée'}.
