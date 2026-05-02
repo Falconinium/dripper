@@ -9,6 +9,7 @@ import {
   generateVerificationCode,
 } from '@/lib/claims/domain';
 import { sendClaimReceived, sendClaimVerification } from '@/lib/emails/send';
+import { checkLimit } from '@/lib/rate-limit';
 import { createClient } from '@/lib/supabase/server';
 
 export type ClaimFormState =
@@ -33,6 +34,14 @@ export async function submitClaim(
   } = await supabase.auth.getUser();
   if (!user) {
     return { status: 'error', message: 'Connectez-vous pour revendiquer.' };
+  }
+
+  const limit = await checkLimit('claim', user.id);
+  if (!limit.ok) {
+    return {
+      status: 'error',
+      message: `Trop de revendications envoyées. Réessayez dans ${Math.ceil(limit.retryAfterSeconds / 60)} min.`,
+    };
   }
 
   const { data: shop } = await supabase

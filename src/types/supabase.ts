@@ -346,45 +346,6 @@ export type Database = {
           },
         ]
       }
-      roasters: {
-        Row: {
-          city: string | null
-          created_at: string
-          description: string | null
-          id: string
-          instagram: string | null
-          name: string
-          photos: Json
-          slug: string
-          updated_at: string
-          website: string | null
-        }
-        Insert: {
-          city?: string | null
-          created_at?: string
-          description?: string | null
-          id?: string
-          instagram?: string | null
-          name: string
-          photos?: Json
-          slug: string
-          updated_at?: string
-          website?: string | null
-        }
-        Update: {
-          city?: string | null
-          created_at?: string
-          description?: string | null
-          id?: string
-          instagram?: string | null
-          name?: string
-          photos?: Json
-          slug?: string
-          updated_at?: string
-          website?: string | null
-        }
-        Relationships: []
-      }
       shop_claims: {
         Row: {
           created_at: string
@@ -480,56 +441,6 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      shop_roasters: {
-        Row: {
-          created_at: string
-          is_primary: boolean
-          roaster_id: string
-          shop_id: string
-        }
-        Insert: {
-          created_at?: string
-          is_primary?: boolean
-          roaster_id: string
-          shop_id: string
-        }
-        Update: {
-          created_at?: string
-          is_primary?: boolean
-          roaster_id?: string
-          shop_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "shop_roasters_roaster_id_fkey"
-            columns: ["roaster_id"]
-            isOneToOne: false
-            referencedRelation: "roasters"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "shop_roasters_shop_id_fkey"
-            columns: ["shop_id"]
-            isOneToOne: false
-            referencedRelation: "shop_scores"
-            referencedColumns: ["shop_id"]
-          },
-          {
-            foreignKeyName: "shop_roasters_shop_id_fkey"
-            columns: ["shop_id"]
-            isOneToOne: false
-            referencedRelation: "shops"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "shop_roasters_shop_id_fkey"
-            columns: ["shop_id"]
-            isOneToOne: false
-            referencedRelation: "shops_public"
             referencedColumns: ["id"]
           },
         ]
@@ -696,80 +607,6 @@ export type Database = {
           srtext?: string | null
         }
         Relationships: []
-      }
-      tasting_notes: {
-        Row: {
-          coffee_origin: string | null
-          coffee_producer: string | null
-          created_at: string
-          id: string
-          is_public: boolean
-          method: string | null
-          notes: string | null
-          photos: Json
-          rating: number | null
-          shop_id: string | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          coffee_origin?: string | null
-          coffee_producer?: string | null
-          created_at?: string
-          id?: string
-          is_public?: boolean
-          method?: string | null
-          notes?: string | null
-          photos?: Json
-          rating?: number | null
-          shop_id?: string | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          coffee_origin?: string | null
-          coffee_producer?: string | null
-          created_at?: string
-          id?: string
-          is_public?: boolean
-          method?: string | null
-          notes?: string | null
-          photos?: Json
-          rating?: number | null
-          shop_id?: string | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "tasting_notes_shop_id_fkey"
-            columns: ["shop_id"]
-            isOneToOne: false
-            referencedRelation: "shop_scores"
-            referencedColumns: ["shop_id"]
-          },
-          {
-            foreignKeyName: "tasting_notes_shop_id_fkey"
-            columns: ["shop_id"]
-            isOneToOne: false
-            referencedRelation: "shops"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tasting_notes_shop_id_fkey"
-            columns: ["shop_id"]
-            isOneToOne: false
-            referencedRelation: "shops_public"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tasting_notes_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       user_badges: {
         Row: {

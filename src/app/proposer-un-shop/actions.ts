@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 
 import { sendSuggestionToAdmin } from '@/lib/emails/send';
+import { checkLimit } from '@/lib/rate-limit';
 import { createClient } from '@/lib/supabase/server';
 
 export type SuggestionState = {
@@ -24,6 +25,14 @@ export async function submitSuggestion(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect('/connexion?next=/proposer-un-shop');
+
+  const limit = await checkLimit('suggestion', user.id);
+  if (!limit.ok) {
+    return {
+      status: 'error',
+      message: `Trop de propositions envoyées. Réessayez dans ${Math.ceil(limit.retryAfterSeconds / 60)} min.`,
+    };
+  }
 
   const terms = formData.get('terms') === 'on';
   if (!terms) {

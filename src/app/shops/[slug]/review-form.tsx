@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { useActionToast } from '@/lib/hooks/use-action-toast';
 
 import { submitReview, type ReviewFormState } from './actions';
 
@@ -36,6 +37,7 @@ export function ReviewForm({
 }) {
   const action = submitReview.bind(null, shopId, slug);
   const [state, formAction] = useActionState<ReviewFormState, FormData>(action, { status: 'idle' });
+  useActionToast(state);
 
   return (
     <form action={formAction} className="space-y-4">

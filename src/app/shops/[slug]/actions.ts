@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { requireAdmin } from '@/lib/auth/require-admin';
+import { checkLimit } from '@/lib/rate-limit';
 import { createClient } from '@/lib/supabase/server';
 
 export type ReviewFormState = {
@@ -30,6 +31,14 @@ export async function submitReview(
   } = await supabase.auth.getUser();
 
   if (!user) redirect(`/connexion?next=/shops/${slug}`);
+
+  const limit = await checkLimit('review', user.id);
+  if (!limit.ok) {
+    return {
+      status: 'error',
+      message: `Trop d'avis envoyés. Réessayez dans ${Math.ceil(limit.retryAfterSeconds / 60)} min.`,
+    };
+  }
 
   const exp = parseScore(formData.get('experience_score'));
   if (exp === null) {
@@ -80,6 +89,9 @@ export async function toggleFavorite(shopId: string, slug: string) {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect(`/connexion?next=/shops/${slug}`);
+
+  const limit = await checkLimit('favorite', user.id);
+  if (!limit.ok) return;
 
   const { data: existing } = await supabase
     .from('favorites')

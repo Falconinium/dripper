@@ -48,8 +48,20 @@ export async function generateMetadata({
   return { title: shop.name, description: shop.description ?? undefined };
 }
 
-export default async function ShopPage({ params }: { params: Promise<{ slug: string }> }) {
+const REVIEWS_PER_PAGE = 10;
+
+export default async function ShopPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ reviews_page?: string }>;
+}) {
   const { slug } = await params;
+  const { reviews_page } = await searchParams;
+  const page = Math.max(1, Number.parseInt(reviews_page ?? '1', 10) || 1);
+  const reviewsFrom = (page - 1) * REVIEWS_PER_PAGE;
+  const reviewsTo = reviewsFrom + REVIEWS_PER_PAGE - 1;
   const supabase = await createClient();
 
   const [shopRes, coordsRes, userRes] = await Promise.all([
@@ -81,10 +93,10 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
       .maybeSingle(),
     supabase
       .from('reviews_with_author')
-      .select('*')
+      .select('*', { count: 'exact' })
       .eq('shop_id', shop.id)
       .order('created_at', { ascending: false })
-      .limit(50),
+      .range(reviewsFrom, reviewsTo),
     user
       ? supabase
           .from('reviews')
@@ -108,6 +120,8 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
 
   const scores = scoresRes.data;
   const reviews = reviewsRes.data ?? [];
+  const totalReviews = reviewsRes.count ?? scores?.review_count ?? 0;
+  const totalPages = Math.max(1, Math.ceil(totalReviews / REVIEWS_PER_PAGE));
   const myReview = myReviewRes.data;
   const isFavorite = !!favRes.data;
   const isAdmin = profileRes.data?.role === 'admin';
@@ -351,12 +365,16 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
               )}
             </section>
 
-            <section>
+            <section id="avis">
               <h2 className="font-serif text-2xl mb-4">
                 Avis ({scores?.review_count ?? 0})
               </h2>
               {!reviews.length ? (
-                <p className="text-muted-foreground text-sm">Aucun avis pour le moment.</p>
+                <p className="text-muted-foreground text-sm">
+                  {page > 1
+                    ? 'Aucun avis sur cette page.'
+                    : 'Aucun avis pour le moment.'}
+                </p>
               ) : (
                 <ul className="space-y-6">
                   {reviews.map((r) => {
@@ -407,6 +425,40 @@ export default async function ShopPage({ params }: { params: Promise<{ slug: str
                   })}
                 </ul>
               )}
+              {totalPages > 1 ? (
+                <nav
+                  className="text-muted-foreground mt-8 flex items-center justify-between text-sm"
+                  aria-label="Pagination des avis"
+                >
+                  {page > 1 ? (
+                    <Link
+                      href={
+                        page - 1 === 1
+                          ? `/shops/${slug}#avis`
+                          : `/shops/${slug}?reviews_page=${page - 1}#avis`
+                      }
+                      className="hover:text-foreground underline-offset-4 hover:underline"
+                    >
+                      ← Précédent
+                    </Link>
+                  ) : (
+                    <span aria-hidden />
+                  )}
+                  <span className="text-xs">
+                    Page {page} / {totalPages}
+                  </span>
+                  {page < totalPages ? (
+                    <Link
+                      href={`/shops/${slug}?reviews_page=${page + 1}#avis`}
+                      className="hover:text-foreground underline-offset-4 hover:underline"
+                    >
+                      Suivant →
+                    </Link>
+                  ) : (
+                    <span aria-hidden />
+                  )}
+                </nav>
+              ) : null}
             </section>
           </div>
         );
